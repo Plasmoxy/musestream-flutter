@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/screens/debug.dart';
+import 'package:musestream_app/screens/rtc_test.dart';
 
 class AppDrawer extends HookConsumerWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -30,6 +31,17 @@ class AppDrawer extends HookConsumerWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => DebugScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('RTC TEST'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => RTCTestScreen(),
                 ),
               );
             },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/screens/login.dart';
 
+// Component to render a class
 class ClassCard extends StatelessWidget {
   final Class cls;
 
