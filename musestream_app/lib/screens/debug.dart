@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/screens/login.dart';
+import 'package:musestream_app/widgets/class_card.dart';
+import 'package:musestream_app/widgets/drawer.dart';
 
-class DebugScreen extends StatefulWidget {
-  DebugScreen({Key? key}) : super(key: key);
+class DebugScreen extends HookConsumerWidget {
+  const DebugScreen({Key? key}) : super(key: key);
 
   @override
-  State<DebugScreen> createState() => _DebugScreenState();
-}
-
-class _DebugScreenState extends State<DebugScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Scaffold a Appbar pre kazdru screenu
     // SingleChildScrollView -> Column
     return Scaffold(
       appBar: AppBar(
         title: const Text('Debug screen'),
       ),
+      drawer: AppDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 30), // spacing
             ElevatedButton(
               child: Text('to login screen'),
               onPressed: () {
@@ -30,48 +31,10 @@ class _DebugScreenState extends State<DebugScreen> {
               },
             ),
 
-            // karta + padding a margin
-            Card(
-              margin: EdgeInsets.all(16),
-              // REFACTOR MENU = Ctrl Shift R
-              child: InkWell(
-                onTap: () {
-                  // navigation to different screen
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => LoginScreen(),
-                  ));
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16),
-                  // co je vnutri tej karty ?
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start, // for esample
-                          children: [
-                            Text(
-                              'Lesson name',
-                              style: TextStyle(fontSize: 30), // for example
-                            ),
-                            Text('Teacher name'),
-                          ],
-                        ),
-                      ),
-                      Image.network(
-                        'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Card(
-              child: Text('ahpoj'),
-            ),
+            ClassCard(cls: MOCK_CLASS),
+            ClassCard(cls: MOCK_CLASS),
+            ClassCard(cls: MOCK_CLASS),
+            ClassCard(cls: MOCK_CLASS),
           ],
         ),
       ),
