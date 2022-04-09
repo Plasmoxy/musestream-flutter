@@ -28,6 +28,9 @@ Class _$ClassFromJson(Map<String, dynamic> json) => Class(
       instrument: json['instrument'] as String,
       id: json['id'] as int?,
       teacherId: json['teacherId'] as int?,
+      teacher: json['teacher'] == null
+          ? null
+          : User.fromJson(json['teacher'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
@@ -36,4 +39,5 @@ Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
       'instrument': instance.instrument,
       'id': instance.id,
       'teacherId': instance.teacherId,
+      'teacher': instance.teacher,
     };
