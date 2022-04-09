@@ -20,6 +20,7 @@ class Signaling {
   String? roomId;
   String? currentRoomText;
   StreamStateCallback? onAddRemoteStream;
+  RTCVideoRenderer? remoteVideo;
 
   Future<String> createRoom(RTCVideoRenderer remoteRenderer) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -188,6 +189,7 @@ class Signaling {
 
     await remoteVideo.initialize();
     remoteVideo.srcObject = await createLocalMediaStream('key');
+    this.remoteVideo = remoteVideo;
   }
 
   Future<void> hangUp(RTCVideoRenderer localVideo) async {
@@ -242,6 +244,8 @@ class Signaling {
       print("Add remote stream");
       onAddRemoteStream?.call(stream);
       remoteStream = stream;
+      remoteVideo?.srcObject = remoteStream;
+      remoteVideo?.muted = false;
     };
   }
 }
