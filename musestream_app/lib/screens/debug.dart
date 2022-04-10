@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musestream_app/screens/class_details_student.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/myClassesStudent.dart';
 import 'package:musestream_app/screens/myClassesTeacher.dart';
@@ -46,16 +47,27 @@ class _DebugScreenState extends State<DebugScreen> {
               onPressed: () {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => myClassesStudentScreen(),
+                  builder: (ctx) => MyClassesStudentScreen(),
                 ));
               },
             ),
+
+            ElevatedButton(
+              child: Text('Class Details Student'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => ClassDetailsStudentScreen(),
+                ));
+              },
+            ),
+
             ElevatedButton(
               child: Text('My Classes Teacher'),
               onPressed: () {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => myClassesTeacherScreen(),
+                  builder: (ctx) => MyClassesTeacherScreen(),
                 ));
               },
             ),
@@ -109,5 +121,3 @@ class _DebugScreenState extends State<DebugScreen> {
     );
   }
 }
-
-class RegusterScreen {}

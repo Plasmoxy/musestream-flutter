@@ -2,25 +2,66 @@ import 'package:flutter/material.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/register.dart';
 
-class myClassesTeacherScreen extends StatefulWidget {
-  myClassesTeacherScreen({Key? key}) : super(key: key);
+class ClassDetailsStudentScreen extends StatefulWidget {
+  ClassDetailsStudentScreen({Key? key}) : super(key: key);
 
   @override
-  State<myClassesTeacherScreen> createState() => _myClassesTeacherScreenState();
+  State<ClassDetailsStudentScreen> createState() =>
+      _ClassDetailsStudentScreenState();
 }
 
-class _myClassesTeacherScreenState extends State<myClassesTeacherScreen> {
+class _ClassDetailsStudentScreenState extends State<ClassDetailsStudentScreen> {
   @override
   Widget build(BuildContext context) {
     // Scaffold a Appbar pre kazdru screenu
     // SingleChildScrollView -> Column
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Classes'),
+        title: const Text('Class Details'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              child: InkWell(
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(36),
+                  child: Row(
+                    children: [
+                      ClipOval(
+                        child: Image.network(
+                          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
+                          width: 60,
+                          height: 60,
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Lesson name',
+                              style: TextStyle(fontSize: 30),
+                              textAlign: TextAlign.left, // for example
+                            ),
+                            Text(
+                              'Teacher name',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Text('Descriptiooooon'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Text(
+              'Upcoming lessons',
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 25),
+            ),
             Card(
               margin: EdgeInsets.all(16),
               // REFACTOR MENU = Ctrl Shift R
@@ -46,6 +87,7 @@ class _myClassesTeacherScreenState extends State<myClassesTeacherScreen> {
                               'Lesson name',
                               style: TextStyle(fontSize: 30), // for example
                             ),
+                            Text('Teacher name'),
                           ],
                         ),
                       ),
@@ -63,13 +105,6 @@ class _myClassesTeacherScreenState extends State<myClassesTeacherScreen> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your onPressed code here!
-        },
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
       ),
     );
   }

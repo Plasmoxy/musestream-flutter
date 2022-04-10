@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/register.dart';
 
-class myClassesStudentScreen extends StatefulWidget {
-  myClassesStudentScreen({Key? key}) : super(key: key);
+class MyClassesStudentScreen extends StatefulWidget {
+  MyClassesStudentScreen({Key? key}) : super(key: key);
 
   @override
-  State<myClassesStudentScreen> createState() => _myClassesStudentScreenState();
+  State<MyClassesStudentScreen> createState() => _MyClassesStudentScreenState();
 }
 
-class _myClassesStudentScreenState extends State<myClassesStudentScreen> {
+class _MyClassesStudentScreenState extends State<MyClassesStudentScreen> {
   @override
   Widget build(BuildContext context) {
     // Scaffold a Appbar pre kazdru screenu
@@ -68,5 +68,3 @@ class _myClassesStudentScreenState extends State<myClassesStudentScreen> {
     );
   }
 }
-
-class RegusterScreen {}
