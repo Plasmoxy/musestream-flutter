@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/register.dart';
 
-class myClassesStudentScreen extends StatefulWidget {
-  myClassesStudentScreen({Key? key}) : super(key: key);
+class myClassesTeacherScreen extends StatefulWidget {
+  myClassesTeacherScreen({Key? key}) : super(key: key);
 
   @override
-  State<myClassesStudentScreen> createState() => _myClassesStudentScreenState();
+  State<myClassesTeacherScreen> createState() => _myClassesTeacherScreenState();
 }
 
-class _myClassesStudentScreenState extends State<myClassesStudentScreen> {
+class _myClassesTeacherScreenState extends State<myClassesTeacherScreen> {
   @override
   Widget build(BuildContext context) {
     // Scaffold a Appbar pre kazdru screenu
@@ -46,7 +46,6 @@ class _myClassesStudentScreenState extends State<myClassesStudentScreen> {
                               'Lesson name',
                               style: TextStyle(fontSize: 30), // for example
                             ),
-                            Text('Teacher name'),
                           ],
                         ),
                       ),
@@ -64,6 +63,13 @@ class _myClassesStudentScreenState extends State<myClassesStudentScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
       ),
     );
   }

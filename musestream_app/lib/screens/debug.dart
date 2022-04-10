@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/myClassesStudent.dart';
+import 'package:musestream_app/screens/myClassesTeacher.dart';
 import 'package:musestream_app/screens/register.dart';
 
 class DebugScreen extends StatefulWidget {
@@ -46,6 +47,15 @@ class _DebugScreenState extends State<DebugScreen> {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => myClassesStudentScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('My Classes Teacher'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => myClassesTeacherScreen(),
                 ));
               },
             ),
