@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LoginScreen extends HookConsumerWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Login"),
+          title: const Text('Register'),
         ),
         body: Container(
           child: Column(
@@ -22,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                   padding: EdgeInsets.all(54),
                   child: Text(
-                    'Login',
+                    'Register',
                     style: TextStyle(fontSize: 45),
                   )),
               Container(
@@ -51,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   margin: EdgeInsets.all(10),
                   child: ElevatedButton(
                     child: Text(
-                      'LogIn',
+                      'Sing up',
                     ),
                     onPressed: () {},
                   )),
@@ -59,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   margin: EdgeInsets.all(5),
                   child: ElevatedButton(
                     child: Text(
-                      'Sign up',
+                      'Back to login',
                     ),
                     onPressed: () {},
                   ))

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
+import 'package:musestream_app/screens/class_details_student.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/widgets/class_card.dart';
 import 'package:musestream_app/widgets/drawer.dart';
@@ -27,6 +28,24 @@ class DebugScreen extends HookConsumerWidget {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => LoginScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('to register screen'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => RegisterScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('My Classes Studnet'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => MyClassesStudentScreen(),
                 ));
               },
             ),
