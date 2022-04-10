@@ -14,6 +14,14 @@ class Signaling {
     ]
   };
 
+  final Map<String, dynamic> offerSdpConstraints = {
+    "mandatory": {
+      "OfferToReceiveAudio": true,
+      "OfferToReceiveVideo": true,
+    },
+    "optional": [],
+  };
+
   RTCPeerConnection? peerConnection;
   MediaStream? localStream;
   MediaStream? remoteStream;
@@ -113,7 +121,7 @@ class Signaling {
 
     if (roomSnapshot.exists) {
       print('Create PeerConnection with configuration: $configuration');
-      peerConnection = await createPeerConnection(configuration);
+      peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
 
       registerPeerConnectionListeners();
 
@@ -182,7 +190,7 @@ class Signaling {
     RTCVideoRenderer localVideo,
     RTCVideoRenderer remoteVideo,
   ) async {
-    var stream = await navigator.mediaDevices.getUserMedia({'video': true, 'audio': false});
+    var stream = await navigator.mediaDevices.getUserMedia({'video': true, 'audio': true});
     await localVideo.initialize();
     localVideo.srcObject = stream;
     localStream = stream;
