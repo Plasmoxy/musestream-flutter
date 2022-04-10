@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/screens/login.dart';
+import 'package:musestream_app/screens/register.dart';
 
 class DebugScreen extends StatefulWidget {
   DebugScreen({Key? key}) : super(key: key);
@@ -29,6 +30,15 @@ class _DebugScreenState extends State<DebugScreen> {
                 ));
               },
             ),
+            ElevatedButton(
+              child: Text('to register screen'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => RegisterScreen(),
+                ));
+              },
+            ),
 
             // karta + padding a margin
             Card(
@@ -49,7 +59,8 @@ class _DebugScreenState extends State<DebugScreen> {
                     children: [
                       Expanded(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start, // for esample
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start, // for esample
                           children: [
                             Text(
                               'Lesson name',
@@ -78,3 +89,5 @@ class _DebugScreenState extends State<DebugScreen> {
     );
   }
 }
+
+class RegusterScreen {}
