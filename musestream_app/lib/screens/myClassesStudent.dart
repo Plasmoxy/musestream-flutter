@@ -1,56 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/screens/login.dart';
-import 'package:musestream_app/screens/myClassesStudent.dart';
 import 'package:musestream_app/screens/register.dart';
 
-class DebugScreen extends StatefulWidget {
-  DebugScreen({Key? key}) : super(key: key);
+class myClassesStudentScreen extends StatefulWidget {
+  myClassesStudentScreen({Key? key}) : super(key: key);
 
   @override
-  State<DebugScreen> createState() => _DebugScreenState();
+  State<myClassesStudentScreen> createState() => _myClassesStudentScreenState();
 }
 
-class _DebugScreenState extends State<DebugScreen> {
+class _myClassesStudentScreenState extends State<myClassesStudentScreen> {
   @override
   Widget build(BuildContext context) {
     // Scaffold a Appbar pre kazdru screenu
     // SingleChildScrollView -> Column
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Debug screen'),
+        title: const Text('My Classes'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ElevatedButton(
-              child: Text('to login screen'),
-              onPressed: () {
-                // navigation to different screen
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => LoginScreen(),
-                ));
-              },
-            ),
-            ElevatedButton(
-              child: Text('to register screen'),
-              onPressed: () {
-                // navigation to different screen
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => RegisterScreen(),
-                ));
-              },
-            ),
-            ElevatedButton(
-              child: Text('My Classes Studnet'),
-              onPressed: () {
-                // navigation to different screen
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => myClassesStudentScreen(),
-                ));
-              },
-            ),
-
-            // karta + padding a margin
             Card(
               margin: EdgeInsets.all(16),
               // REFACTOR MENU = Ctrl Shift R
@@ -63,7 +33,7 @@ class _DebugScreenState extends State<DebugScreen> {
                 },
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(36),
                   // co je vnutri tej karty ?
                   child: Row(
                     children: [
@@ -80,21 +50,27 @@ class _DebugScreenState extends State<DebugScreen> {
                           ],
                         ),
                       ),
-                      Image.network(
-                        'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
-                        width: 40,
-                        height: 40,
-                      ),
+                      ClipOval(
+                        child: Image.network(
+                          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
+                          width: 60,
+                          height: 60,
+                        ),
+                      )
                     ],
                   ),
                 ),
               ),
             ),
-            Card(
-              child: Text('ahpoj'),
-            ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
       ),
     );
   }
