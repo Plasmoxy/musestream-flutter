@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/screens/class_details_student.dart';
 import 'package:musestream_app/screens/login.dart';
+import 'package:musestream_app/screens/my_classes.dart';
+import 'package:musestream_app/screens/register.dart';
 import 'package:musestream_app/widgets/class_card.dart';
 import 'package:musestream_app/widgets/drawer.dart';
 
@@ -41,11 +43,21 @@ class DebugScreen extends HookConsumerWidget {
               },
             ),
             ElevatedButton(
-              child: Text('My Classes Studnet'),
+              child: Text('My Classes'),
               onPressed: () {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => MyClassesStudentScreen(),
+                  builder: (ctx) => MyClassesScreen(),
+                ));
+              },
+            ),
+
+            ElevatedButton(
+              child: Text('Class details student'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => ClassDetailsStudentScreen(),
                 ));
               },
             ),

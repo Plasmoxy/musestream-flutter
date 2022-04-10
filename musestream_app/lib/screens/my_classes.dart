@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/register.dart';
 
-class MyClassesStudentScreen extends StatefulWidget {
-  MyClassesStudentScreen({Key? key}) : super(key: key);
+class MyClassesScreen extends HookConsumerWidget {
+  const MyClassesScreen({Key? key}) : super(key: key);
 
   @override
-  State<MyClassesStudentScreen> createState() => _MyClassesStudentScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // v builde mam premennu
+    final isTeacher = true;
 
-class _MyClassesStudentScreenState extends State<MyClassesStudentScreen> {
-  @override
-  Widget build(BuildContext context) {
-    // Scaffold a Appbar pre kazdru screenu
-    // SingleChildScrollView -> Column
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Classes'),
@@ -39,14 +36,12 @@ class _MyClassesStudentScreenState extends State<MyClassesStudentScreen> {
                     children: [
                       Expanded(
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start, // for esample
+                          crossAxisAlignment: CrossAxisAlignment.start, // for esample
                           children: [
                             Text(
                               'Lesson name',
                               style: TextStyle(fontSize: 30), // for example
                             ),
-                            Text('Teacher name'),
                           ],
                         ),
                       ),
@@ -65,6 +60,15 @@ class _MyClassesStudentScreenState extends State<MyClassesStudentScreen> {
           ],
         ),
       ),
+      floatingActionButton: isTeacher
+          ? FloatingActionButton(
+              onPressed: () {
+                // Add your onPressed code here!
+              },
+              backgroundColor: Colors.blue,
+              child: const Icon(Icons.add),
+            )
+          : null,
     );
   }
 }
