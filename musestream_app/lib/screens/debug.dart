@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
+import 'package:musestream_app/models/stores.dart';
 import 'package:musestream_app/screens/class_details_student.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
@@ -13,6 +14,8 @@ class DebugScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.watch(AuthStore.provider);
+
     // Scaffold a Appbar pre kazdru screenu
     // SingleChildScrollView -> Column
     return Scaffold(
@@ -23,6 +26,8 @@ class DebugScreen extends HookConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Text('Countos: ' + (auth.count.toString())),
+            ElevatedButton(child: Text('inc'), onPressed: auth.inc),
             SizedBox(height: 30), // spacing
             ElevatedButton(
               child: Text('to login screen'),

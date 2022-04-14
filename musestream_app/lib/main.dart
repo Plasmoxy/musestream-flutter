@@ -12,7 +12,7 @@ void main() async {
   );
 
   // run
-  runApp(const App());
+  runApp(ProviderScope(child: App()));
 }
 
 class App extends HookConsumerWidget {
