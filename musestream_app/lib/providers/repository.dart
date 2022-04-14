@@ -9,6 +9,9 @@ class Repository {
   static final provider = Provider((ref) => Repository(ref.watch(AuthStore.provider)));
 
   Repository(this.auth) {
-    dio.options.headers['authorization'] = "Bearer ${auth.token}";
+    if (auth.token != null) dio.options.headers['authorization'] = 'Bearer ${auth.token}';
+    dio.options.baseUrl = 'http://localhost';
   }
+
+  dynamic hello() => dio.get('/');
 }
