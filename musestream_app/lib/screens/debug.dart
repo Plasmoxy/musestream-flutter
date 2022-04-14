@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
-import 'package:musestream_app/models/stores.dart';
+import 'package:musestream_app/providers/auth.dart';
 import 'package:musestream_app/screens/class_details_student.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
