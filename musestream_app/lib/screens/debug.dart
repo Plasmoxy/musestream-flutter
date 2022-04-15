@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/screens/class_details.dart';
+import 'package:musestream_app/screens/create_class.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
@@ -89,6 +90,15 @@ class DebugScreen extends HookConsumerWidget {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => SettingsScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Create Class'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => CreateClassScreen(),
                 ));
               },
             ),
