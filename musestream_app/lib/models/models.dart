@@ -83,6 +83,17 @@ class RequestClass {
   // TODO jsonn
 }
 
+@JsonSerializable()
+class Student {
+  final String name;
+
+  Student({required this.name});
+
+  // TODO jsonn
+}
+
+final MOCK_STUDENT = Student(name: "Elvis Elvisko");
+
 final MOCK_CLASS = Class(
     id: 0,
     instrument: 'Nervy',

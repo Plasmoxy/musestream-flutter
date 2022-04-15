@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
+import 'package:musestream_app/screens/add_student_to_class.dart';
 import 'package:musestream_app/screens/class_details.dart';
 import 'package:musestream_app/screens/create_class.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
+import 'package:musestream_app/screens/lessons_of_student.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/register.dart';
 import 'package:musestream_app/screens/request_class.dart';
 import 'package:musestream_app/screens/settings.dart';
+import 'package:musestream_app/screens/students_of_class.dart';
 import 'package:musestream_app/widgets/class_card.dart';
 import 'package:musestream_app/widgets/drawer.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
@@ -99,6 +102,33 @@ class DebugScreen extends HookConsumerWidget {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => CreateClassScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Students of class'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => StudentsOfClassCreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Add student to class'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => AddStudentToClassScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Lessons of student'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => LessonsOfStudentScreen(),
                 ));
               },
             ),
