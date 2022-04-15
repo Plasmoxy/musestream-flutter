@@ -22,16 +22,24 @@ class RegisterScreen extends HookConsumerWidget {
                   )),
               Container(
                 padding: EdgeInsets.all(14),
-                decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.grey))),
                 child: TextField(
-                  decoration: InputDecoration(hintText: "Email", hintStyle: TextStyle(color: Colors.grey), border: InputBorder.none),
+                  decoration: InputDecoration(
+                      hintText: "Email",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: InputBorder.none),
                 ),
               ),
               Container(
                 padding: EdgeInsets.all(14),
-                decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.grey))),
                 child: TextField(
-                  decoration: InputDecoration(hintText: "Password", hintStyle: TextStyle(color: Colors.grey), border: InputBorder.none),
+                  decoration: InputDecoration(
+                      hintText: "Password",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: InputBorder.none),
                 ),
               ),
               Container(

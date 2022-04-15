@@ -6,6 +6,8 @@ import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/register.dart';
+import 'package:musestream_app/screens/request_class.dart';
+import 'package:musestream_app/screens/settings.dart';
 import 'package:musestream_app/widgets/class_card.dart';
 import 'package:musestream_app/widgets/drawer.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
@@ -72,6 +74,25 @@ class DebugScreen extends HookConsumerWidget {
                 ));
               },
             ),
+            ElevatedButton(
+              child: Text('Request Class'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => RequestClassesScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Settings'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => SettingsScreen(),
+                ));
+              },
+            ),
+
             ClassCard(cls: MOCK_CLASS),
             LessonCard(less: MOCK_LESSON),
           ],

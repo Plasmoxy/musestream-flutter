@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -60,6 +62,23 @@ class Lesson {
       required this.start,
       required this.end,
       required this.videoConnection});
+
+  // TODO jsonn
+}
+
+@JsonSerializable()
+class RequestClass {
+  final int classId;
+  final int studentId;
+  final String date;
+  final String message;
+
+  RequestClass({
+    required this.classId,
+    required this.studentId,
+    required this.date,
+    required this.message,
+  });
 
   // TODO jsonn
 }

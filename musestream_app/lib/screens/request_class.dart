@@ -12,26 +12,16 @@ class RequestClassesScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Classes'),
+        title: const Text('Class requests'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             ClassCard(cls: MOCK_CLASS),
             ClassCard(cls: MOCK_CLASS),
-            ClassCard(cls: MOCK_CLASS),
           ],
         ),
       ),
-      floatingActionButton: isTeacher
-          ? FloatingActionButton(
-              onPressed: () {
-                // Add your onPressed code here!
-              },
-              backgroundColor: Colors.blue,
-              child: const Icon(Icons.add),
-            )
-          : null,
     );
   }
 }
