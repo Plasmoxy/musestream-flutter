@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
 
 import 'package:musestream_app/widgets/class_card.dart';
-import 'package:musestream_app/widgets/student_card.dart';
+import 'package:musestream_app/widgets/user_card.dart';
 
 class StudentsOfClassCreen extends HookConsumerWidget {
   const StudentsOfClassCreen({Key? key}) : super(key: key);
@@ -17,10 +17,9 @@ class StudentsOfClassCreen extends HookConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            StudentCard(std: MOCK_STUDENT),
-            StudentCard(std: MOCK_STUDENT),
-            StudentCard(std: MOCK_STUDENT),
-            StudentCard(std: MOCK_STUDENT),
+            UserCard(usr: MOCK_USER),
+            UserCard(usr: MOCK_USER),
+            UserCard(usr: MOCK_USER),
           ],
         ),
       ),

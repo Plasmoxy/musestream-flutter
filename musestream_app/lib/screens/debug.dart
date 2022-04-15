@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/screens/add_student_to_class.dart';
+import 'package:musestream_app/screens/admin_home.dart';
 import 'package:musestream_app/screens/class_details.dart';
 import 'package:musestream_app/screens/create_class.dart';
+import 'package:musestream_app/screens/edit_user.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/screens/lessons_of_student.dart';
+import 'package:musestream_app/screens/list_of_users.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/register.dart';
@@ -129,6 +132,33 @@ class DebugScreen extends HookConsumerWidget {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => LessonsOfStudentScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Admin home screen'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => AdminHomeScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('List of users'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => ListOfUsersScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Edit user'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => EditUserScreen(),
                 ));
               },
             ),

@@ -4,12 +4,12 @@ import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/screens/login.dart';
 
 // Component to render a class
-class StudentCard extends StatelessWidget {
-  final Student std;
+class UserCard extends StatelessWidget {
+  final User usr;
 
-  const StudentCard({
+  const UserCard({
     Key? key,
-    required this.std,
+    required this.usr,
   }) : super(key: key);
 
   @override
@@ -32,9 +32,10 @@ class StudentCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      std.name,
+                      usr.name,
                       style: TextStyle(fontSize: 30),
                     ),
+                    Text(usr.type),
                   ],
                 ),
               ),

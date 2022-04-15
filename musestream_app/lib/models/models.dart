@@ -24,8 +24,8 @@ class User {
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
-final MOCK_TEACHER = User(
-    id: 0, email: 'mail@mail', name: 'Mock', pictureUrl: '', type: 'teacher');
+final MOCK_USER = User(
+    id: 0, email: 'mail@mail', name: 'Mock', pictureUrl: '', type: 'student');
 
 @JsonSerializable()
 class Class {
@@ -83,23 +83,12 @@ class RequestClass {
   // TODO jsonn
 }
 
-@JsonSerializable()
-class Student {
-  final String name;
-
-  Student({required this.name});
-
-  // TODO jsonn
-}
-
-final MOCK_STUDENT = Student(name: "Elvis Elvisko");
-
 final MOCK_CLASS = Class(
     id: 0,
     instrument: 'Nervy',
     description: 'Hra na nervy',
     title: 'MTAA',
-    teacher: MOCK_TEACHER,
+    teacher: MOCK_USER,
     teacherId: 0);
 
 final MOCK_LESSON = Lesson(
