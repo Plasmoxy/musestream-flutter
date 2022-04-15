@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
@@ -10,13 +11,19 @@ class User {
   final String pictureUrl;
   final int? id;
 
-  User({required this.name, required this.email, required this.type, required this.pictureUrl, this.id});
+  User(
+      {required this.name,
+      required this.email,
+      required this.type,
+      required this.pictureUrl,
+      this.id});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
-final MOCK_TEACHER = User(id: 0, email: 'mail@mail', name: 'Mock', pictureUrl: '', type: 'teacher');
+final MOCK_TEACHER = User(
+    id: 0, email: 'mail@mail', name: 'Mock', pictureUrl: '', type: 'teacher');
 
 @JsonSerializable()
 class Class {
@@ -27,10 +34,47 @@ class Class {
   final int? teacherId;
   final User? teacher;
 
-  Class({required this.title, required this.description, required this.instrument, this.id, this.teacherId, this.teacher});
+  Class(
+      {required this.title,
+      required this.description,
+      required this.instrument,
+      this.id,
+      this.teacherId,
+      this.teacher});
 
   factory Class.fromJson(Map<String, dynamic> json) => _$ClassFromJson(json);
   Map<String, dynamic> toJson() => _$ClassToJson(this);
 }
 
-final MOCK_CLASS = Class(id: 0, instrument: 'Nervy', description: 'Hra na nervy', title: 'MTAA', teacher: MOCK_TEACHER, teacherId: 0);
+@JsonSerializable()
+class Lesson {
+  final int classStudentId;
+  final String notes;
+  final String start;
+  final String end;
+  final String videoConnection;
+
+  Lesson(
+      {required this.classStudentId,
+      required this.notes,
+      required this.start,
+      required this.end,
+      required this.videoConnection});
+
+  // TODO jsonn
+}
+
+final MOCK_CLASS = Class(
+    id: 0,
+    instrument: 'Nervy',
+    description: 'Hra na nervy',
+    title: 'MTAA',
+    teacher: MOCK_TEACHER,
+    teacherId: 0);
+
+final MOCK_LESSON = Lesson(
+    classStudentId: 0,
+    notes: 'This is a lesson',
+    start: '15.05.2022',
+    end: '16.05.2022',
+    videoConnection: 'working');

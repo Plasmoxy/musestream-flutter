@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
+<<<<<<< Updated upstream
 import 'package:musestream_app/screens/class_details_student.dart';
+=======
+import 'package:musestream_app/providers/auth.dart';
+import 'package:musestream_app/screens/class_details.dart';
+>>>>>>> Stashed changes
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/register.dart';
 import 'package:musestream_app/widgets/class_card.dart';
 import 'package:musestream_app/widgets/drawer.dart';
+import 'package:musestream_app/widgets/lesson_card.dart';
 
 class DebugScreen extends HookConsumerWidget {
   const DebugScreen({Key? key}) : super(key: key);
@@ -53,7 +59,7 @@ class DebugScreen extends HookConsumerWidget {
             ),
 
             ElevatedButton(
-              child: Text('Class details student'),
+              child: Text('Class details'),
               onPressed: () {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
@@ -63,9 +69,7 @@ class DebugScreen extends HookConsumerWidget {
             ),
 
             ClassCard(cls: MOCK_CLASS),
-            ClassCard(cls: MOCK_CLASS),
-            ClassCard(cls: MOCK_CLASS),
-            ClassCard(cls: MOCK_CLASS),
+            LessonCard(less: MOCK_LESSON),
           ],
         ),
       ),
