@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/models/models.dart';
+import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/screens/login.dart';
 
 // Component to render a class
@@ -18,7 +19,7 @@ class LessonCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) => LoginScreen(),
+            builder: (ctx) => DebugScreen(),
           ));
         },
         child: Container(

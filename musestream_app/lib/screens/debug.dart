@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
-<<<<<<< Updated upstream
-import 'package:musestream_app/screens/class_details_student.dart';
-=======
-import 'package:musestream_app/providers/auth.dart';
 import 'package:musestream_app/screens/class_details.dart';
->>>>>>> Stashed changes
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/register.dart';
@@ -63,7 +58,7 @@ class DebugScreen extends HookConsumerWidget {
               onPressed: () {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => ClassDetailsStudentScreen(),
+                  builder: (ctx) => ClassDetailsScreen(),
                 ));
               },
             ),

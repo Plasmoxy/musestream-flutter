@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/models/models.dart';
+import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/screens/login.dart';
 
 // Component to render a class
@@ -18,15 +19,13 @@ class ClassCard extends StatelessWidget {
       // REFACTOR MENU = Ctrl Shift R
       child: InkWell(
         onTap: () {
-          // navigate to class detail screen !
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) => LoginScreen(),
+            builder: (ctx) => DebugScreen(),
           ));
         },
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.all(16),
-          // co je vnutri tej karty ?
           child: Row(
             children: [
               Expanded(

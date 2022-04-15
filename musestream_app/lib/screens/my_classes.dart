@@ -22,6 +22,7 @@ class MyClassesScreen extends HookConsumerWidget {
           children: [
             ClassCard(cls: MOCK_CLASS),
             ClassCard(cls: MOCK_CLASS),
+            ClassCard(cls: MOCK_CLASS),
           ],
         ),
       ),

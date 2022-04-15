@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/models/models.dart';
-import 'package:musestream_app/screens/login.dart';
-import 'package:musestream_app/screens/register.dart';
+import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
 
-class ClassDetailsStudentScreen extends StatefulWidget {
-  ClassDetailsStudentScreen({Key? key}) : super(key: key);
+class ClassDetailsScreen extends StatefulWidget {
+  ClassDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  State<ClassDetailsStudentScreen> createState() =>
-      _ClassDetailsStudentScreenState();
+  State<ClassDetailsScreen> createState() => _ClassDetailsScreenState();
 }
 
-class _ClassDetailsStudentScreenState extends State<ClassDetailsStudentScreen> {
+class _ClassDetailsScreenState extends State<ClassDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     // Scaffold a Appbar pre kazdru screenu
     // SingleChildScrollView -> Column
+    final isTeacher = true;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Class Details'),
@@ -59,6 +59,27 @@ class _ClassDetailsStudentScreenState extends State<ClassDetailsStudentScreen> {
                 ),
               ),
             ),
+            if (isTeacher)
+              Container(
+                padding: const EdgeInsets.only(left: 36.0),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      child: Text('Delete'),
+                      onPressed: () {},
+                    ),
+                    ElevatedButton(
+                      child: Text('Students of class'),
+                      onPressed: () {
+                        // navigation to different screen
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => DebugScreen(),
+                        ));
+                      },
+                    ),
+                  ],
+                ),
+              ),
             Text(
               'Upcoming lessons',
               textAlign: TextAlign.left,
