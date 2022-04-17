@@ -49,7 +49,7 @@ class Core extends ChangeNotifier {
       if (e is DioError) {
         // guard unauthorized
         if (e.response?.statusCode == 401) {
-          logout();
+          print('Unauthorized !!!');
         }
 
         // handle custom status code hadnlers

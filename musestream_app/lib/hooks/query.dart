@@ -35,7 +35,7 @@ class QueryDisplay<T> extends StatelessWidget {
     if (q.error != null && err != null) return err!(q) ?? SizedBox();
 
     // otherwise display result
-    return val!(q.value) ?? SizedBox();
+    return val?.call(q.value) ?? SizedBox();
   }
 }
 
@@ -69,6 +69,7 @@ QueryHookState<T> useQuery<T>(
   Future<T> Function() creator, {
   final Future<void> Function(T?)? onSuccess,
   final Future<void> Function(Object)? onError,
+  activate = false,
 }) {
   final active = useState(false);
   final loading = useState(false);
@@ -94,6 +95,12 @@ QueryHookState<T> useQuery<T>(
     }
     loading.value = false;
   }, [creator]);
+
+  // trigger first run if activated
+  useEffect(() {
+    if (activate) run();
+    return () {};
+  }, []);
 
   return QueryHookState(resp.value, err.value, loading.value, active.value, run);
 }
