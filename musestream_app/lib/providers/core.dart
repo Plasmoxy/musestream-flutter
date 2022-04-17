@@ -31,7 +31,7 @@ class Core extends ChangeNotifier {
       print(e.toString());
       return handler.next(e);
     }));
-    dio.options.baseUrl = 'http://localhost';
+    dio.options.baseUrl = 'http://10.0.2.2';
   }
 
   static final provider = ChangeNotifierProvider((ref) {

@@ -6,7 +6,7 @@ import 'package:musestream_app/providers/core.dart';
 class QueryDisplay<T> extends StatelessWidget {
   final QueryHookState q;
   final Widget? Function()? loading;
-  final Widget? Function(T)? val;
+  final Widget? Function(T?)? val;
   final Widget? Function(QueryHookState)? err;
 
   const QueryDisplay({
@@ -19,6 +19,10 @@ class QueryDisplay<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // do not show inactive queries
+    if (!q.isActive) return SizedBox();
+
+    // default loading indicator
     if (q.isLoading) {
       if (loading == null) {
         return SizedBox(height: 16, width: 16, child: CircularProgressIndicator());
@@ -26,14 +30,18 @@ class QueryDisplay<T> extends StatelessWidget {
         return loading!() ?? SizedBox();
       }
     }
+
+    // if error then error
     if (q.error != null && err != null) return err!(q) ?? SizedBox();
-    if (q.value != null && val != null) return val!(q.value!) ?? SizedBox();
-    return SizedBox();
+
+    // otherwise display result
+    return val!(q.value) ?? SizedBox();
   }
 }
 
 class QueryHookState<T> {
   bool isLoading;
+  bool isActive;
 
   T? value;
   Object? error;
@@ -51,6 +59,7 @@ class QueryHookState<T> {
     this.value,
     this.error,
     this.isLoading,
+    this.isActive,
     this.run,
   );
 }
@@ -58,14 +67,16 @@ class QueryHookState<T> {
 // note: creator must be within callback
 QueryHookState<T> useQuery<T>(
   Future<T> Function() creator, {
-  final Future<void> Function(T)? onSuccess,
+  final Future<void> Function(T?)? onSuccess,
   final Future<void> Function(Object)? onError,
 }) {
+  final active = useState(false);
   final loading = useState(false);
   final resp = useState<T?>(null);
   final err = useState<Object?>(null);
 
   final run = useCallback(() async {
+    active.value = true;
     loading.value = true;
     resp.value = null;
     err.value = null;
@@ -84,5 +95,5 @@ QueryHookState<T> useQuery<T>(
     loading.value = false;
   }, [creator]);
 
-  return QueryHookState(resp.value, err.value, loading.value, run);
+  return QueryHookState(resp.value, err.value, loading.value, active.value, run);
 }

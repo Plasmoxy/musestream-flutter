@@ -31,60 +31,58 @@ class LoginScreen extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text("Login"),
       ),
-      body: Container(
-        padding: EdgeInsets.all(16),
-        child: Form(
-          key: form,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(54),
-                child: Text(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Form(
+            key: form,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
                   'Login',
                   style: TextStyle(fontSize: 45),
                 ),
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Name",
+                SizedBox(height: 24),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Name",
+                  ),
+                  controller: nameCtrl,
+                  validator: notEmpty,
                 ),
-                controller: nameCtrl,
-                validator: notEmpty,
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Password",
+                SizedBox(height: 16),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Password",
+                  ),
+                  controller: passwordCtrl,
+                  validator: notEmpty,
+                  obscureText: true,
                 ),
-                controller: passwordCtrl,
-                validator: notEmpty,
-                obscureText: true,
-              ),
-              Container(
-                  margin: EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    child: Text(
-                      'Log in',
-                    ),
-                    onPressed: submit,
-                  )),
-              Container(
-                margin: EdgeInsets.all(5),
-                child: ElevatedButton(
-                    child: Text(
-                      'Sign up',
-                    ),
-                    onPressed: () => navigatorPush(context, (c) => RegisterScreen())),
-              ),
-              QueryDisplay(
-                q: queryLogin,
-                val: (v) => Text('Logged in !'),
-                err: (q) => Text(q.errMsg, style: tsErr),
-              ),
-            ],
+                SizedBox(height: 10),
+                QueryDisplay(
+                  q: queryLogin,
+                  val: (v) => Text('Logged in !'),
+                  err: (q) => Text(q.errMsg, style: tsErr),
+                ),
+                ElevatedButton(
+                  child: Text(
+                    'Log in',
+                  ),
+                  onPressed: submit,
+                ),
+                ElevatedButton(
+                  child: Text(
+                    'Sign up',
+                  ),
+                  onPressed: () => navigatorPush(context, (c) => RegisterScreen()),
+                ),
+              ],
+            ),
           ),
         ),
       ),
