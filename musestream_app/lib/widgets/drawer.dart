@@ -19,7 +19,14 @@ class AppDrawer extends HookConsumerWidget {
             child: SizedBox(
               height: 64,
               child: const DrawerHeader(
-                child: Text('MuseStream - student'),
+                child: Text(
+                  'MuseStream',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.blueAccent,
+                  ),
+                ),
               ),
             ),
           ),
@@ -55,7 +62,7 @@ class AppDrawer extends HookConsumerWidget {
           ),
           Padding(
             padding: EdgeInsets.all(16),
-            child: Text('logged: ${core.loggedIn}\nuser: ${core.user?.name}'),
+            child: Text(core.debug),
           )
         ],
       ),

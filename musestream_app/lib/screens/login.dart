@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:musestream_app/hooks/query.dart';
+import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/screens/register.dart';
+import 'package:musestream_app/utils/util.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final core = ref.watch(Core.provider);
     final nameCtrl = useTextEditingController();
     final passwordCtrl = useTextEditingController();
+    final form = useMemoized(() => GlobalKey<FormState>());
+
+    final queryLogin = useQuery(useCallback(
+      () => core.login(nameCtrl.text, passwordCtrl.text),
+      [nameCtrl.text, passwordCtrl.text],
+    ));
+
+    final submit = useCallback(() {
+      if (form.currentState?.validate() ?? false) {
+        queryLogin.run();
+      }
+    }, [form]);
 
     return Scaffold(
       appBar: AppBar(
@@ -16,58 +33,59 @@ class LoginScreen extends HookConsumerWidget {
       ),
       body: Container(
         padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
+        child: Form(
+          key: form,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
                 padding: EdgeInsets.all(54),
                 child: Text(
                   'Login',
                   style: TextStyle(fontSize: 45),
-                )),
-            Container(
-              padding: EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey))),
-              child: TextField(
+                ),
+              ),
+              TextFormField(
                 decoration: InputDecoration(
-                  hintText: "Username",
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
+                  border: OutlineInputBorder(),
+                  hintText: "Name",
                 ),
                 controller: nameCtrl,
+                validator: notEmpty,
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey))),
-              child: TextField(
+              SizedBox(height: 16),
+              TextFormField(
                 decoration: InputDecoration(
+                  border: OutlineInputBorder(),
                   hintText: "Password",
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
                 ),
                 controller: passwordCtrl,
+                validator: notEmpty,
+                obscureText: true,
               ),
-            ),
-            Container(
-                margin: EdgeInsets.all(10),
-                child: ElevatedButton(
-                  child: Text(
-                    'LogIn',
-                  ),
-                  onPressed: () {},
-                )),
-            Container(
+              Container(
+                  margin: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    child: Text(
+                      'Log in',
+                    ),
+                    onPressed: submit,
+                  )),
+              Container(
                 margin: EdgeInsets.all(5),
                 child: ElevatedButton(
-                  child: Text(
-                    'Sign up',
-                  ),
-                  onPressed: () {},
-                ))
-          ],
+                    child: Text(
+                      'Sign up',
+                    ),
+                    onPressed: () => navigatorPush(context, (c) => RegisterScreen())),
+              ),
+              QueryDisplay(
+                q: queryLogin,
+                val: (v) => Text('Logged in !'),
+                err: (q) => Text(q.errMsg, style: tsErr),
+              ),
+            ],
+          ),
         ),
       ),
     );

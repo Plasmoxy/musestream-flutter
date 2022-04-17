@@ -7,29 +7,27 @@ part of 'models.dart';
 // **************************************************************************
 
 TokenData _$TokenDataFromJson(Map<String, dynamic> json) => TokenData(
-      json['type'] as String,
-      json['bearer'] as String,
+      json['token'] as String,
+      User.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TokenDataToJson(TokenData instance) => <String, dynamic>{
-      'type': instance.type,
-      'bearer': instance.bearer,
+      'token': instance.token,
+      'user': instance.user,
     };
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
       name: json['name'] as String,
       email: json['email'] as String,
       type: json['type'] as String,
-      pictureUrl: json['pictureUrl'] as String,
-      id: json['id'] as int?,
+      id: json['id'] as int,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'email': instance.email,
       'type': instance.type,
-      'pictureUrl': instance.pictureUrl,
-      'id': instance.id,
     };
 
 Class _$ClassFromJson(Map<String, dynamic> json) => Class(

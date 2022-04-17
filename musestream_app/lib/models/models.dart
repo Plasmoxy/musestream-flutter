@@ -4,10 +4,10 @@ part 'models.g.dart';
 
 @JsonSerializable()
 class TokenData {
-  final String type;
-  final String bearer;
+  final String token;
+  final User user;
 
-  TokenData(this.type, this.bearer);
+  TokenData(this.token, this.user);
 
   factory TokenData.fromJson(Map<String, dynamic> json) => _$TokenDataFromJson(json);
   Map<String, dynamic> toJson() => _$TokenDataToJson(this);
@@ -15,19 +15,18 @@ class TokenData {
 
 @JsonSerializable()
 class User {
+  final int id;
   final String name;
   final String email;
   final String type;
-  final String pictureUrl;
-  final int? id;
 
-  User({required this.name, required this.email, required this.type, required this.pictureUrl, this.id});
+  User({required this.name, required this.email, required this.type, required this.id});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
-final MOCK_USER = User(id: 0, email: 'mail@mail', name: 'Mock', pictureUrl: '', type: 'student');
+final MOCK_USER = User(id: 0, email: 'mail@mail', name: 'Mock', type: 'student');
 
 @JsonSerializable()
 class Class {
