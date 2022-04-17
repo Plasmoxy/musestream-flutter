@@ -3,6 +3,17 @@ import 'package:json_annotation/json_annotation.dart';
 part 'models.g.dart';
 
 @JsonSerializable()
+class TokenData {
+  final String type;
+  final String bearer;
+
+  TokenData(this.type, this.bearer);
+
+  factory TokenData.fromJson(Map<String, dynamic> json) => _$TokenDataFromJson(json);
+  Map<String, dynamic> toJson() => _$TokenDataToJson(this);
+}
+
+@JsonSerializable()
 class User {
   final String name;
   final String email;

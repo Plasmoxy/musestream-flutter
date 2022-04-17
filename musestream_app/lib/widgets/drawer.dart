@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/screens/rtc_test.dart';
 
@@ -8,6 +9,8 @@ class AppDrawer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final core = ref.watch(Core.provider);
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -50,6 +53,10 @@ class AppDrawer extends HookConsumerWidget {
             title: const Text('Log out'),
             onTap: () {},
           ),
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Text('logged: ${core.loggedIn}\nuser: ${core.user?.name}'),
+          )
         ],
       ),
     );

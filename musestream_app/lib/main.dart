@@ -12,7 +12,10 @@ void main() async {
   );
 
   // run
-  runApp(ProviderScope(child: App()));
+  runApp(UncontrolledProviderScope(
+    child: App(),
+    container: ProviderContainer(),
+  ));
 }
 
 class App extends HookConsumerWidget {
@@ -22,6 +25,7 @@ class App extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'MuseStream',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

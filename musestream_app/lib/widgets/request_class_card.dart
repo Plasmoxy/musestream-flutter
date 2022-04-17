@@ -15,7 +15,6 @@ class RequestClassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      // REFACTOR MENU = Ctrl Shift R
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(

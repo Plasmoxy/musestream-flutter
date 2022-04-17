@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
+import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/add_student_to_class.dart';
 import 'package:musestream_app/screens/admin_home.dart';
 import 'package:musestream_app/screens/class_details.dart';
@@ -25,10 +25,8 @@ class DebugScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final auth = ref.watch(AuthStore.provider);
+    final core = ref.watch(Core.provider);
 
-    // Scaffold a Appbar pre kazdru screenu
-    // SingleChildScrollView -> Column
     return Scaffold(
       appBar: AppBar(
         title: const Text('Debug screen'),
@@ -37,8 +35,6 @@ class DebugScreen extends HookConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text('Countos: ' + (auth.count.toString())),
-            ElevatedButton(child: Text('inc'), onPressed: auth.inc),
             SizedBox(height: 30),
             SizedBox(height: 30),
             ElevatedButton(
@@ -167,7 +163,6 @@ class DebugScreen extends HookConsumerWidget {
                 ));
               },
             ),
-
             ClassCard(cls: MOCK_CLASS),
             LessonCard(less: MOCK_LESSON),
           ],
