@@ -4,19 +4,18 @@ import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/screens/login.dart';
 
 // Component to render a class
-class ClassCard extends StatelessWidget {
-  final Class cls;
+class UserCard extends StatelessWidget {
+  final User usr;
 
-  const ClassCard({
+  const UserCard({
     Key? key,
-    required this.cls,
+    required this.usr,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      // REFACTOR MENU = Ctrl Shift R
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
@@ -30,13 +29,13 @@ class ClassCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // for esample
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      cls.title,
-                      style: TextStyle(fontSize: 30), // for example
+                      usr.name,
+                      style: TextStyle(fontSize: 30),
                     ),
-                    Text(cls.teacher?.name ?? ''),
+                    Text(usr.type),
                   ],
                 ),
               ),

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/screens/debug.dart';
-import 'package:musestream_app/screens/login.dart';
 
 // Component to render a class
-class ClassCard extends StatelessWidget {
-  final Class cls;
+class RequestClassCard extends StatelessWidget {
+  final RequestClass reqcls;
 
-  const ClassCard({
+  const RequestClassCard({
     Key? key,
-    required this.cls,
+    required this.reqcls,
   }) : super(key: key);
 
   @override
@@ -30,13 +29,10 @@ class ClassCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // for esample
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      cls.title,
-                      style: TextStyle(fontSize: 30), // for example
-                    ),
-                    Text(cls.teacher?.name ?? ''),
+                    Text('kk'),
+                    Text('dd'),
                   ],
                 ),
               ),

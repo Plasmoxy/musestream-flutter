@@ -2,13 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
-import 'package:musestream_app/providers/auth.dart';
-import 'package:musestream_app/screens/class_details_student.dart';
+import 'package:musestream_app/screens/add_student_to_class.dart';
+import 'package:musestream_app/screens/admin_home.dart';
+import 'package:musestream_app/screens/class_details.dart';
+import 'package:musestream_app/screens/create_class.dart';
+import 'package:musestream_app/screens/edit_user.dart';
+import 'package:musestream_app/screens/lesson_details.dart';
+import 'package:musestream_app/screens/lessons_of_student.dart';
+import 'package:musestream_app/screens/list_of_users.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/register.dart';
+import 'package:musestream_app/screens/request_class.dart';
+import 'package:musestream_app/screens/settings.dart';
+import 'package:musestream_app/screens/students_of_class.dart';
 import 'package:musestream_app/widgets/class_card.dart';
 import 'package:musestream_app/widgets/drawer.dart';
+import 'package:musestream_app/widgets/lesson_card.dart';
 
 class DebugScreen extends HookConsumerWidget {
   const DebugScreen({Key? key}) : super(key: key);
@@ -59,18 +69,107 @@ class DebugScreen extends HookConsumerWidget {
               },
             ),
             ElevatedButton(
-              child: Text('Class details student'),
+              child: Text('Class details'),
               onPressed: () {
                 // navigation to different screen
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => ClassDetailsStudentScreen(),
+                  builder: (ctx) => ClassDetailsScreen(),
                 ));
               },
             ),
+            ElevatedButton(
+              child: Text('Lesson details'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => LessonDetailsScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Request Class'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => RequestClassesScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Settings'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => SettingsScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Create Class'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => CreateClassScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Students of class'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => StudentsOfClassCreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Add student to class'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => AddStudentToClassScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Lessons of student'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => LessonsOfStudentScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Admin home screen'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => AdminHomeScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('List of users'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => ListOfUsersScreen(),
+                ));
+              },
+            ),
+            ElevatedButton(
+              child: Text('Edit user'),
+              onPressed: () {
+                // navigation to different screen
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => EditUserScreen(),
+                ));
+              },
+            ),
+
             ClassCard(cls: MOCK_CLASS),
-            ClassCard(cls: MOCK_CLASS),
-            ClassCard(cls: MOCK_CLASS),
-            ClassCard(cls: MOCK_CLASS),
+            LessonCard(less: MOCK_LESSON),
           ],
         ),
       ),
