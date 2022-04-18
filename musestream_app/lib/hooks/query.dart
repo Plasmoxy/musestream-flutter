@@ -65,10 +65,19 @@ class QueryHookState<T> {
   Future<void> Function() run;
 
   String get errMsg {
-    if (error != null && error is ApiErr) {
-      return (error as ApiErr).msg;
+    if (error != null) {
+      // grab api error message first
+      if (error is ApiErr) return (error as ApiErr).msg;
+      // otherwise grab serverside message if supplied
+      if (error is DioError) {
+        final e = error as DioError;
+
+        if (e.response?.data?['message'] != null) {
+          return e.response?.data?['message'];
+        }
+      }
     }
-    return 'Unknown error occured.';
+    return 'Unknown error occured, please see logs.';
   }
 
   QueryHookState(

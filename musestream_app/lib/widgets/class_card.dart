@@ -17,6 +17,7 @@ class ClassCard extends StatelessWidget {
     return Card(
       color: Colors.blue,
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      elevation: 8,
       child: InkWell(
         onTap: () {
           navigate(context, (ctx) => ClassDetailsScreen(cls: cls));

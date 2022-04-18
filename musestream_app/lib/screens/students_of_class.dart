@@ -16,11 +16,7 @@ class StudentsOfClassCreen extends HookConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            UserCard(usr: MOCK_USER),
-            UserCard(usr: MOCK_USER),
-            UserCard(usr: MOCK_USER),
-          ],
+          children: [],
         ),
       ),
       floatingActionButton: FloatingActionButton(

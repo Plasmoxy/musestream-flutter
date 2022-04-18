@@ -16,7 +16,7 @@ class ClassDetailsScreen extends HookConsumerWidget {
 
     final qLessons = useQuery(
       useCallback(() async {
-        final resp = await core.dio.get<List<dynamic>>('/classes/${cls.id}/students/${core.user?.id}/lessons');
+        final resp = await core.dio.get<List<dynamic>>('/classes/${cls.id}/lessons');
         return resp.data?.map((j) => Lesson.fromJson(j)).toList();
       }, [core]),
       activate: true,
@@ -25,6 +25,7 @@ class ClassDetailsScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Class Details'),
+        actions: [IconButton(onPressed: qLessons.run, icon: Icon(Icons.refresh))],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -78,16 +79,13 @@ class ClassDetailsScreen extends HookConsumerWidget {
                     ],
                   ),
                 ),
+              Text(
+                'Lessons',
+                style: TextStyle(fontSize: 25),
+              ),
+              SizedBox(height: 8),
               QueryDisplay(q: qLessons),
-              Text(
-                'Upcoming lessons',
-                style: TextStyle(fontSize: 25),
-              ),
               if (qLessons.value != null) ...qLessons.value!.map((l) => LessonCard(less: l)),
-              Text(
-                'Past lessons',
-                style: TextStyle(fontSize: 25),
-              ),
             ],
           ),
         ),

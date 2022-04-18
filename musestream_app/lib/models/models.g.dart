@@ -55,17 +55,38 @@ Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
 Lesson _$LessonFromJson(Map<String, dynamic> json) => Lesson(
       classStudentId: json['classStudentId'] as int,
       notes: json['notes'] as String,
-      start: json['start'] as String,
-      end: json['end'] as String,
+      start: DateTime.parse(json['start'] as String),
+      end: DateTime.parse(json['end'] as String),
       roomId: json['roomId'] as String?,
+      classStudent: json['classStudent'] == null
+          ? null
+          : ClassStudent.fromJson(json['classStudent'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
       'classStudentId': instance.classStudentId,
       'notes': instance.notes,
-      'start': instance.start,
-      'end': instance.end,
+      'start': instance.start.toIso8601String(),
+      'end': instance.end.toIso8601String(),
       'roomId': instance.roomId,
+      'classStudent': instance.classStudent,
+    };
+
+ClassStudent _$ClassStudentFromJson(Map<String, dynamic> json) => ClassStudent(
+      id: json['id'] as int,
+      classId: json['classId'] as int,
+      studentId: json['studentId'] as int,
+      student: json['student'] == null
+          ? null
+          : User.fromJson(json['student'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$ClassStudentToJson(ClassStudent instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'classId': instance.classId,
+      'studentId': instance.studentId,
+      'student': instance.student,
     };
 
 RequestClass _$RequestClassFromJson(Map<String, dynamic> json) => RequestClass(

@@ -154,8 +154,6 @@ class DebugScreen extends HookConsumerWidget {
                 ));
               },
             ),
-            ClassCard(cls: MOCK_CLASS),
-            LessonCard(less: MOCK_LESSON),
           ],
         ),
       ),

@@ -23,10 +23,7 @@ class _LessonsOfStudentScreenState extends State<LessonsOfStudentScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            LessonCard(less: MOCK_LESSON),
-            LessonCard(less: MOCK_LESSON),
-          ],
+          children: [],
         ),
       ),
     );

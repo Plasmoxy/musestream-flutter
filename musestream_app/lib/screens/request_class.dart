@@ -16,10 +16,7 @@ class RequestClassesScreen extends HookConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            ClassCard(cls: MOCK_CLASS),
-            ClassCard(cls: MOCK_CLASS),
-          ],
+          children: [],
         ),
       ),
     );

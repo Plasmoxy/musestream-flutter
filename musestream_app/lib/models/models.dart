@@ -27,8 +27,6 @@ class User {
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
-final MOCK_USER = User(id: 0, email: 'mail@mail', name: 'Mock', type: 'student', fullName: 'Mock user');
-
 @JsonSerializable()
 class Class {
   final String title;
@@ -48,14 +46,34 @@ class Class {
 class Lesson {
   final int classStudentId;
   final String notes;
-  final String start;
-  final String end;
+  final DateTime start;
+  final DateTime end;
   final String? roomId;
 
-  Lesson({required this.classStudentId, required this.notes, required this.start, required this.end, this.roomId});
+  final ClassStudent? classStudent;
+
+  Lesson({required this.classStudentId, required this.notes, required this.start, required this.end, this.roomId, this.classStudent});
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
   Map<String, dynamic> toJson() => _$LessonToJson(this);
+}
+
+@JsonSerializable()
+class ClassStudent {
+  final int id;
+  final int classId;
+  final int studentId;
+  final User? student;
+
+  ClassStudent({
+    required this.id,
+    required this.classId,
+    required this.studentId,
+    this.student,
+  });
+
+  factory ClassStudent.fromJson(Map<String, dynamic> json) => _$ClassStudentFromJson(json);
+  Map<String, dynamic> toJson() => _$ClassStudentToJson(this);
 }
 
 @JsonSerializable()
@@ -74,7 +92,3 @@ class RequestClass {
 
   // TODO jsonn
 }
-
-final MOCK_CLASS = Class(id: 0, instrument: 'Nervy', description: 'Hra na nervy', title: 'MTAA', teacher: MOCK_USER, teacherId: 0);
-
-final MOCK_LESSON = Lesson(classStudentId: 0, notes: 'This is a lesson', start: '15.05.2022', end: '16.05.2022');
