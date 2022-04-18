@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
-import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
 
 class ClassDetailsScreen extends HookConsumerWidget {
@@ -15,7 +14,13 @@ class ClassDetailsScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
 
-    final qLessons = useQuery(useCallback(() async {}, []));
+    final qLessons = useQuery(
+      useCallback(() async {
+        final resp = await core.dio.get<List<dynamic>>('/classes/${cls.id}/students/${core.user?.id}/lessons');
+        return resp.data?.map((j) => Lesson.fromJson(j)).toList();
+      }, [core]),
+      activate: true,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -73,18 +78,16 @@ class ClassDetailsScreen extends HookConsumerWidget {
                     ],
                   ),
                 ),
+              QueryDisplay(q: qLessons),
               Text(
                 'Upcoming lessons',
                 style: TextStyle(fontSize: 25),
               ),
-              LessonCard(less: MOCK_LESSON),
-              LessonCard(less: MOCK_LESSON),
+              if (qLessons.value != null) ...qLessons.value!.map((l) => LessonCard(less: l)),
               Text(
                 'Past lessons',
                 style: TextStyle(fontSize: 25),
               ),
-              LessonCard(less: MOCK_LESSON),
-              LessonCard(less: MOCK_LESSON),
             ],
           ),
         ),

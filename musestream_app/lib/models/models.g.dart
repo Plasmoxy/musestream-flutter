@@ -57,7 +57,7 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) => Lesson(
       notes: json['notes'] as String,
       start: json['start'] as String,
       end: json['end'] as String,
-      videoConnection: json['videoConnection'] as String,
+      roomId: json['roomId'] as String?,
     );
 
 Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
@@ -65,7 +65,7 @@ Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
       'notes': instance.notes,
       'start': instance.start,
       'end': instance.end,
-      'videoConnection': instance.videoConnection,
+      'roomId': instance.roomId,
     };
 
 RequestClass _$RequestClassFromJson(Map<String, dynamic> json) => RequestClass(

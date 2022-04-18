@@ -50,9 +50,9 @@ class Lesson {
   final String notes;
   final String start;
   final String end;
-  final String videoConnection;
+  final String? roomId;
 
-  Lesson({required this.classStudentId, required this.notes, required this.start, required this.end, required this.videoConnection});
+  Lesson({required this.classStudentId, required this.notes, required this.start, required this.end, this.roomId});
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
   Map<String, dynamic> toJson() => _$LessonToJson(this);
@@ -77,4 +77,4 @@ class RequestClass {
 
 final MOCK_CLASS = Class(id: 0, instrument: 'Nervy', description: 'Hra na nervy', title: 'MTAA', teacher: MOCK_USER, teacherId: 0);
 
-final MOCK_LESSON = Lesson(classStudentId: 0, notes: 'This is a lesson', start: '15.05.2022', end: '16.05.2022', videoConnection: 'working');
+final MOCK_LESSON = Lesson(classStudentId: 0, notes: 'This is a lesson', start: '15.05.2022', end: '16.05.2022');
