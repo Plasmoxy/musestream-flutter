@@ -19,7 +19,7 @@ class ClassCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
         onTap: () {
-          navigate(context, (ctx) => ClassDetailsScreen());
+          navigate(context, (ctx) => ClassDetailsScreen(cls: cls));
         },
         child: Container(
           width: double.infinity,

@@ -65,15 +65,6 @@ class DebugScreen extends HookConsumerWidget {
               },
             ),
             ElevatedButton(
-              child: Text('Class details'),
-              onPressed: () {
-                // navigation to different screen
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => ClassDetailsScreen(),
-                ));
-              },
-            ),
-            ElevatedButton(
               child: Text('Lesson details'),
               onPressed: () {
                 // navigation to different screen

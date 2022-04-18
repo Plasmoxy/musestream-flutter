@@ -36,5 +36,3 @@ class _ListOfUsersScreenState extends State<ListOfUsersScreen> {
     );
   }
 }
-
-class RegusterScreen {}

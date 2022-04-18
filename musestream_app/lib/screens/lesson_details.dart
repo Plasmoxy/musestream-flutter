@@ -60,29 +60,26 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
             ),
             Container(
               padding: const EdgeInsets.only(left: 36.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(
+                  'Date\nDate',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Row(
                   children: [
-                    Text(
-                      'Date\nDate',
-                      style: TextStyle(fontSize: 20),
+                    ElevatedButton(
+                      child: Text('Join video call'),
+                      onPressed: () {},
                     ),
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          child: Text('Join video call'),
-                          onPressed: () {},
-                        ),
-                        if (isTeacher)
-                          ElevatedButton(
-                            child: Text('Delete'),
-                            onPressed: () {},
-                          ),
-                      ],
-                    ),
-                    Text(
-                        'Description description description description description description description '),
-                  ]),
+                    if (isTeacher)
+                      ElevatedButton(
+                        child: Text('Delete'),
+                        onPressed: () {},
+                      ),
+                  ],
+                ),
+                Text('Description description description description description description description '),
+              ]),
             )
           ],
         ),
@@ -90,5 +87,3 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     );
   }
 }
-
-class RegusterScreen {}

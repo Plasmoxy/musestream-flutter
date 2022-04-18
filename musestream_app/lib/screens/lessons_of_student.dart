@@ -32,5 +32,3 @@ class _LessonsOfStudentScreenState extends State<LessonsOfStudentScreen> {
     );
   }
 }
-
-class RegusterScreen {}
