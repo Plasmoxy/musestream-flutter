@@ -6,10 +6,12 @@ import 'package:musestream_app/utils/util.dart';
 // Component to render a class
 class LessonCard extends StatelessWidget {
   final Lesson less;
+  final void Function()? onTap;
 
   const LessonCard({
     Key? key,
     required this.less,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -19,9 +21,7 @@ class LessonCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 8,
       child: InkWell(
-        onTap: () {
-          navigate(context, (c) => LessonDetailsScreen(lessonId: less.id));
-        },
+        onTap: onTap,
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.all(16),

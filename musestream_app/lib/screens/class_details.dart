@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/screens/lesson_details.dart';
+import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
 
 class ClassDetailsScreen extends HookConsumerWidget {
@@ -105,7 +107,14 @@ class ClassDetailsScreen extends HookConsumerWidget {
                 ),
                 SizedBox(height: 8),
                 QueryDisplay(q: qLessons),
-                if (qLessons.value != null) ...qLessons.value!.map((l) => LessonCard(less: l)),
+                if (qLessons.value != null)
+                  ...qLessons.value!.map((l) => LessonCard(
+                        less: l,
+                        onTap: () async {
+                          await navigate(context, (c) => LessonDetailsScreen(lessonId: l.id));
+                          qLessons.run();
+                        },
+                      )),
                 if (qLessons.value != null && qLessons.value!.isEmpty) Text('No lessons'),
               ],
             ),
