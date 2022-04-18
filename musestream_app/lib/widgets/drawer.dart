@@ -62,6 +62,12 @@ class AppDrawer extends HookConsumerWidget {
             },
           ),
           ListTile(
+            title: const Text('RTC testing'),
+            onTap: () {
+              navigate(context, (ctx) => RTCTestScreen(), replace: true, toFirst: true);
+            },
+          ),
+          ListTile(
             title: const Text('Log out'),
             onTap: () {
               core.logout();

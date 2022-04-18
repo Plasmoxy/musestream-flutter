@@ -5,6 +5,13 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 typedef void StreamStateCallback(MediaStream stream);
 
+/*
+WebRTC signaling trieda na uzatvorenie spojenia cez Firebase
+Inspirovane a prerobene z https://github.com/md-weber/webrtc_tutorial
+Video daneho tutorialu: https://www.youtube.com/watch?v=hAKQzNQmNe0&feature=youtu.be
+
+Upravene kvoli nefunknocsti originalneho kodu (napojenie na renderery atd.).
+*/
 class Signaling {
   Map<String, dynamic> configuration = {
     'iceServers': [
@@ -29,6 +36,9 @@ class Signaling {
   String? currentRoomText;
   StreamStateCallback? onAddRemoteStream;
   RTCVideoRenderer? remoteVideo;
+  void Function(RTCPeerConnectionState)? onConnectionStateChange;
+
+  Signaling({this.onConnectionStateChange});
 
   Future<String> createRoom(RTCVideoRenderer remoteRenderer) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -238,6 +248,7 @@ class Signaling {
 
     peerConnection?.onConnectionState = (RTCPeerConnectionState state) {
       print('Connection state change: $state');
+      onConnectionStateChange?.call(state);
     };
 
     peerConnection?.onSignalingState = (RTCSignalingState state) {

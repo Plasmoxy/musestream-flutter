@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/screens/call_screen.dart';
 import 'package:musestream_app/utils/util.dart';
 
 class LessonDetailsScreen extends HookConsumerWidget {
@@ -26,6 +27,7 @@ class LessonDetailsScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Lesson'),
+        actions: [IconButton(onPressed: qLesson.run, icon: Icon(Icons.refresh))],
       ),
       body: SingleChildScrollView(
         child: QueryDisplay<Lesson>(
@@ -67,8 +69,17 @@ class LessonDetailsScreen extends HookConsumerWidget {
                   Row(
                     children: [
                       ElevatedButton(
-                        child: Text('Join video call'),
-                        onPressed: () {},
+                        child: Text(core.user?.type == 'teacher'
+                            ? 'Start call'
+                            : lesson.roomId == null
+                                ? 'Teacher hasnt started call'
+                                : 'Join video call'),
+                        onPressed: (core.user?.type == 'student' && lesson.roomId == null)
+                            ? null
+                            : () async {
+                                await navigate(context, (ctx) => CallScreen(lessonId: lesson.id));
+                                qLesson.run();
+                              },
                       ),
                       if (core.user?.type == 'teacher')
                         IconButton(
@@ -78,6 +89,7 @@ class LessonDetailsScreen extends HookConsumerWidget {
                         ),
                     ],
                   ),
+                  Text(lesson.toJson().toString()),
                   SizedBox(height: 16),
                   Text(
                     'Notes:',

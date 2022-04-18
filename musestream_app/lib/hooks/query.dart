@@ -99,7 +99,7 @@ QueryHookState<T> useQuery<T>(
   Future<T> Function() creator, {
   final Future<void> Function(T?)? onSuccess,
   final Future<void> Function(Object)? onError,
-  activate = false,
+  bool activate = false,
 }) {
   final active = useState(false);
   final loading = useState(false);
@@ -113,6 +113,7 @@ QueryHookState<T> useQuery<T>(
     err.value = null;
     try {
       resp.value = await creator();
+      onSuccess?.call(resp.value);
     } catch (e) {
       err.value = e;
       onError?.call(e);

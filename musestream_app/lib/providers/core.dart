@@ -69,7 +69,9 @@ class Core extends ChangeNotifier {
     }
   }
 
-  Future<void> login(String name, String pass) async {
+  Future<void> login(String name, String pass, String serverIp) async {
+    dio.options.baseUrl = serverIp;
+
     final res = await handle(dio.post('/login', data: {'name': name, 'password': pass}), {
       400: (r) => throw ApiErr('Wrong credentials!', r),
     });

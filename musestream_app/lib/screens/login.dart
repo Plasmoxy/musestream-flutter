@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,10 +15,11 @@ class LoginScreen extends HookConsumerWidget {
     final core = ref.watch(Core.provider);
     final nameCtrl = useTextEditingController();
     final passwordCtrl = useTextEditingController();
+    final serverCtrl = useTextEditingController(text: kIsWeb ? 'http://localhost' : 'http://10.0.2.2');
     final form = useMemoized(() => GlobalKey<FormState>());
 
     final queryLogin = useQuery(useCallback(
-      () => core.login(nameCtrl.text, passwordCtrl.text),
+      () => core.login(nameCtrl.text, passwordCtrl.text, serverCtrl.text),
       [nameCtrl.text, passwordCtrl.text],
     ));
 
@@ -48,7 +50,7 @@ class LoginScreen extends HookConsumerWidget {
                 TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: "Name",
+                    label: Text('Name'),
                   ),
                   controller: nameCtrl,
                   validator: notEmpty,
@@ -57,11 +59,20 @@ class LoginScreen extends HookConsumerWidget {
                 TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: "Password",
+                    label: Text("Password"),
                   ),
                   controller: passwordCtrl,
                   validator: notEmpty,
                   obscureText: true,
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text('Server address'),
+                  ),
+                  controller: serverCtrl,
+                  validator: notEmpty,
                 ),
                 SizedBox(height: 10),
                 QueryDisplay<void>(
@@ -69,17 +80,25 @@ class LoginScreen extends HookConsumerWidget {
                   val: (v) => Text('Logged in !'),
                   err: (q) => Text(q.errMsg, style: tsErr),
                 ),
-                ElevatedButton(
-                  child: Text(
-                    'Log in',
-                  ),
-                  onPressed: submit,
-                ),
-                TextButton(
-                  child: Text(
-                    'Sign up',
-                  ),
-                  onPressed: () => navigate(context, (c) => RegisterScreen()),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.blue),
+                      child: Text(
+                        'Log in',
+                      ),
+                      onPressed: submit,
+                    ),
+                    SizedBox(width: 8),
+                    ElevatedButton(
+                      child: Text(
+                        'Sign up',
+                      ),
+                      onPressed: () => navigate(context, (c) => RegisterScreen()),
+                    ),
+                  ],
                 ),
               ],
             ),
