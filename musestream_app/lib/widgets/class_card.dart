@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/models/models.dart';
-import 'package:musestream_app/screens/class_details.dart';
-import 'package:musestream_app/utils/util.dart';
 
 // Component to render a class
 class ClassCard extends StatelessWidget {
   final Class cls;
+  final void Function()? onTap;
 
   const ClassCard({
     Key? key,
     required this.cls,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -19,9 +19,7 @@ class ClassCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 8,
       child: InkWell(
-        onTap: () {
-          navigate(context, (ctx) => ClassDetailsScreen(cls: cls));
-        },
+        onTap: onTap,
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.all(16),

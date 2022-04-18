@@ -36,7 +36,7 @@ Class _$ClassFromJson(Map<String, dynamic> json) => Class(
       title: json['title'] as String,
       description: json['description'] as String,
       instrument: json['instrument'] as String,
-      id: json['id'] as int?,
+      id: json['id'] as int,
       teacherId: json['teacherId'] as int?,
       teacher: json['teacher'] == null
           ? null
@@ -53,6 +53,7 @@ Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
     };
 
 Lesson _$LessonFromJson(Map<String, dynamic> json) => Lesson(
+      id: json['id'] as int,
       classStudentId: json['classStudentId'] as int,
       notes: json['notes'] as String,
       start: DateTime.parse(json['start'] as String),
@@ -64,6 +65,7 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) => Lesson(
     );
 
 Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
+      'id': instance.id,
       'classStudentId': instance.classStudentId,
       'notes': instance.notes,
       'start': instance.start.toIso8601String(),

@@ -1,87 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
-import 'package:musestream_app/screens/debug.dart';
-import 'package:musestream_app/widgets/lesson_card.dart';
+import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/utils/util.dart';
 
-class LessonDetailsScreen extends StatefulWidget {
-  LessonDetailsScreen({Key? key}) : super(key: key);
+class LessonDetailsScreen extends HookConsumerWidget {
+  final int lessonId;
+
+  const LessonDetailsScreen({Key? key, required this.lessonId}) : super(key: key);
 
   @override
-  State<LessonDetailsScreen> createState() => _LessonDetailsScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final core = ref.watch(Core.provider);
 
-class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
-  @override
-  Widget build(BuildContext context) {
-    // Scaffold a Appbar pre kazdru screenu
-    // SingleChildScrollView -> Column
-    final isTeacher = true;
+    final qLesson = useQuery(
+      useCallback(() async {
+        final resp = await core.handle(core.dio.get<dynamic>('/lessons/$lessonId'));
+        return Lesson.fromJson(resp.data);
+      }, [core, lessonId]),
+      activate: true,
+    );
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Class Details'),
+        title: const Text('Lesson'),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              child: InkWell(
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(36),
-                  child: Row(
-                    children: [
-                      ClipOval(
-                        child: Image.network(
-                          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
-                          width: 60,
-                          height: 60,
+        child: QueryDisplay<Lesson>(
+          q: qLesson,
+          val: (lesson) => Column(
+            children: [
+              Container(
+                child: InkWell(
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(36),
+                    child: Row(
+                      children: [
+                        Icon(Icons.timer, size: 32),
+                        SizedBox(width: 32),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Start: ' + formatDate(lesson!.start),
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              Text(
+                                'End: ' + formatDate(lesson.end),
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text(
-                              'Lesson name',
-                              style: TextStyle(fontSize: 30),
-                            ),
-                            Text(
-                              'Teacher/Student name',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Text('Descriptiooooon'),
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 36.0),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(
-                  'Date\nDate',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      child: Text('Join video call'),
-                      onPressed: () {},
-                    ),
-                    if (isTeacher)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Row(
+                    children: [
                       ElevatedButton(
-                        child: Text('Delete'),
+                        child: Text('Join video call'),
                         onPressed: () {},
                       ),
-                  ],
-                ),
-                Text('Description description description description description description description '),
-              ]),
-            )
-          ],
+                      if (core.user?.type == 'teacher')
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Colors.redAccent,
+                          onPressed: () => {},
+                        ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Notes:',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text(lesson.notes),
+                ]),
+              )
+            ],
+          ),
         ),
       ),
     );

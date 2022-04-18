@@ -6,7 +6,7 @@ import 'package:musestream_app/utils/util.dart';
 
 // display query state
 class QueryDisplay<T> extends StatelessWidget {
-  final QueryHookState q;
+  final QueryHookState<T> q;
   final Widget? Function()? loading;
   final Widget? Function(T?)? val;
   final Widget? Function(QueryHookState)? err;
@@ -27,9 +27,14 @@ class QueryDisplay<T> extends StatelessWidget {
     // default loading indicator
     if (q.isLoading) {
       if (loading == null) {
-        return Padding(
-          padding: EdgeInsets.all(8),
-          child: SizedBox(height: 16, width: 16, child: CircularProgressIndicator()),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(18),
+              child: SizedBox(height: 18, width: 18, child: CircularProgressIndicator()),
+            ),
+          ],
         );
       } else {
         return loading!() ?? SizedBox();
@@ -126,7 +131,7 @@ QueryHookState<T> useQuery<T>(
   useEffect(() {
     if (activate) run();
     return () {};
-  }, []);
+  }, [activate]);
 
   return QueryHookState(resp.value, err.value, loading.value, active.value, run);
 }

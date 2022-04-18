@@ -32,11 +32,11 @@ class Class {
   final String title;
   final String description;
   final String instrument;
-  final int? id;
+  final int id;
   final int? teacherId;
   final User? teacher;
 
-  Class({required this.title, required this.description, required this.instrument, this.id, this.teacherId, this.teacher});
+  Class({required this.title, required this.description, required this.instrument, required this.id, this.teacherId, this.teacher});
 
   factory Class.fromJson(Map<String, dynamic> json) => _$ClassFromJson(json);
   Map<String, dynamic> toJson() => _$ClassToJson(this);
@@ -44,6 +44,7 @@ class Class {
 
 @JsonSerializable()
 class Lesson {
+  final int id;
   final int classStudentId;
   final String notes;
   final DateTime start;
@@ -52,7 +53,7 @@ class Lesson {
 
   final ClassStudent? classStudent;
 
-  Lesson({required this.classStudentId, required this.notes, required this.start, required this.end, this.roomId, this.classStudent});
+  Lesson({required this.id, required this.classStudentId, required this.notes, required this.start, required this.end, this.roomId, this.classStudent});
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
   Map<String, dynamic> toJson() => _$LessonToJson(this);

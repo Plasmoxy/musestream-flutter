@@ -64,7 +64,7 @@ class LoginScreen extends HookConsumerWidget {
                   obscureText: true,
                 ),
                 SizedBox(height: 10),
-                QueryDisplay(
+                QueryDisplay<void>(
                   q: queryLogin,
                   val: (v) => Text('Logged in !'),
                   err: (q) => Text(q.errMsg, style: tsErr),

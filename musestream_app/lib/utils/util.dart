@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-void navigate(BuildContext context, Widget Function(BuildContext) builder, {replace = false, toFirst = false}) {
+Future<T?> navigate<T>(BuildContext context, Widget Function(BuildContext) builder, {replace = false, toFirst = false}) {
   if (toFirst) Navigator.of(context).popUntil((route) => route.isFirst);
   if (replace) {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: builder));
+    return Navigator.of(context).pushReplacement(MaterialPageRoute(builder: builder));
   } else {
-    Navigator.of(context).push(MaterialPageRoute(builder: builder));
+    return Navigator.of(context).push<T>(MaterialPageRoute(builder: builder));
   }
 }
 
