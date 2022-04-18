@@ -54,7 +54,8 @@ class Lesson {
 
   Lesson({required this.classStudentId, required this.notes, required this.start, required this.end, required this.videoConnection});
 
-  // TODO jsonn
+  factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
+  Map<String, dynamic> toJson() => _$LessonToJson(this);
 }
 
 @JsonSerializable()
