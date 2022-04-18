@@ -75,7 +75,7 @@ class LoginScreen extends HookConsumerWidget {
                   ),
                   onPressed: submit,
                 ),
-                ElevatedButton(
+                TextButton(
                   child: Text(
                     'Sign up',
                   ),

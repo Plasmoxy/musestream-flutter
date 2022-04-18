@@ -4,7 +4,7 @@ import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
 
 class ClassDetailsScreen extends StatefulWidget {
-  ClassDetailsScreen({Key? key}) : super(key: key);
+  const ClassDetailsScreen({Key? key}) : super(key: key);
 
   @override
   State<ClassDetailsScreen> createState() => _ClassDetailsScreenState();

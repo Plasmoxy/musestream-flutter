@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/models/models.dart';
-import 'package:musestream_app/screens/debug.dart';
-import 'package:musestream_app/screens/login.dart';
+import 'package:musestream_app/screens/class_details.dart';
+import 'package:musestream_app/utils/util.dart';
 
 // Component to render a class
 class ClassCard extends StatelessWidget {
@@ -19,9 +19,7 @@ class ClassCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) => DebugScreen(),
-          ));
+          navigate(context, (ctx) => ClassDetailsScreen());
         },
         child: Container(
           width: double.infinity,
@@ -46,7 +44,7 @@ class ClassCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'with ' + (cls.teacher?.name ?? ''),
+                      'with ' + (cls.teacher?.fullName ?? '?'),
                       style: TextStyle(color: Colors.white),
                     ),
                   ],
