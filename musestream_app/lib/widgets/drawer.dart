@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/debug.dart';
+import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/rtc_test.dart';
+import 'package:musestream_app/utils/util.dart';
 
 class AppDrawer extends HookConsumerWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -18,47 +20,52 @@ class AppDrawer extends HookConsumerWidget {
           SafeArea(
             child: SizedBox(
               height: 64,
-              child: const DrawerHeader(
-                child: Text(
-                  'MuseStream',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.blueAccent,
-                  ),
+              child: DrawerHeader(
+                child: Row(
+                  children: [
+                    Text(
+                      'MuseStream',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.blueAccent,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      core.user?.type ?? '',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purpleAccent,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
+
           ListTile(
-            title: const Text('Item 1'),
-            onTap: () {},
+            title: const Text('My classes'),
+            onTap: () {
+              navigate(context, (ctx) => MyClassesScreen(), replace: true, toFirst: true);
+            },
           ),
+
+          // student
+          if (core.user?.type == 'student') ...[],
+
           ListTile(
             title: const Text('Debug screen'),
             onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => DebugScreen(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: const Text('RTC TEST'),
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => RTCTestScreen(),
-                ),
-              );
+              navigate(context, (ctx) => DebugScreen(), replace: true, toFirst: true);
             },
           ),
           ListTile(
             title: const Text('Log out'),
-            onTap: () {},
+            onTap: () {
+              core.logout();
+            },
           ),
           Padding(
             padding: EdgeInsets.all(16),

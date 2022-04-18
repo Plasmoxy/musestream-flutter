@@ -9,6 +9,7 @@ import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/register.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/class_card.dart';
+import 'package:musestream_app/widgets/drawer.dart';
 
 class MyClassesScreen extends HookConsumerWidget {
   const MyClassesScreen({Key? key}) : super(key: key);
@@ -20,25 +21,25 @@ class MyClassesScreen extends HookConsumerWidget {
 
     final queryMine = useQuery(useCallback(() => cls.getMine(), [cls]), activate: true);
 
-    // v builde mam premennu
-    final isTeacher = true;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Classes'),
+        actions: [IconButton(onPressed: queryMine.run, icon: Icon(Icons.refresh))],
       ),
+      drawer: AppDrawer(),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             QueryDisplay(
               q: queryMine,
-              err: (e) => Text(e.toString(), style: tsErr),
             ),
+            SizedBox(height: 16),
             ...cls.myClasses.map((c) => ClassCard(cls: c)),
           ],
         ),
       ),
-      floatingActionButton: isTeacher
+      floatingActionButton: core.loginData?.user.type == 'teacher'
           ? FloatingActionButton(
               onPressed: () {
                 // Add your onPressed code here!

@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/utils/util.dart';
 
 // display query state
 class QueryDisplay<T> extends StatelessWidget {
@@ -25,14 +27,29 @@ class QueryDisplay<T> extends StatelessWidget {
     // default loading indicator
     if (q.isLoading) {
       if (loading == null) {
-        return SizedBox(height: 16, width: 16, child: CircularProgressIndicator());
+        return Padding(
+          padding: EdgeInsets.all(8),
+          child: SizedBox(height: 16, width: 16, child: CircularProgressIndicator()),
+        );
       } else {
         return loading!() ?? SizedBox();
       }
     }
 
     // if error then error
-    if (q.error != null && err != null) return err!(q) ?? SizedBox();
+    if (q.error != null) {
+      if (err != null) {
+        return err!(q) ?? SizedBox();
+      } else {
+        return Padding(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [Text(q.errMsg, style: tsErr)],
+          ),
+        );
+      }
+    }
 
     // otherwise display result
     return val?.call(q.value) ?? SizedBox();
@@ -48,11 +65,10 @@ class QueryHookState<T> {
   Future<void> Function() run;
 
   String get errMsg {
-    if (error is ApiErr?) {
-      if (error == null) return 'Unknown error';
+    if (error != null && error is ApiErr) {
       return (error as ApiErr).msg;
     }
-    return error.toString();
+    return 'Unknown error occured.';
   }
 
   QueryHookState(
@@ -84,14 +100,15 @@ QueryHookState<T> useQuery<T>(
     try {
       resp.value = await creator();
     } catch (e) {
-      if (e is ApiErr) {
-        print(e.res?.data); // debug print response error
-        err.value = e;
-        onError?.call(e);
-        print(e);
-      } else {
-        rethrow;
+      err.value = e;
+      onError?.call(e);
+
+      print('----- QUERY ERROR -----');
+      if (e is DioError) {
+        print(e.response?.data);
       }
+      print('-----------------------');
+      print(e);
     }
     loading.value = false;
   }, [creator]);

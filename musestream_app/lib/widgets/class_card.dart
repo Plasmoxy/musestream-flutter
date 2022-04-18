@@ -15,8 +15,8 @@ class ClassCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.blue,
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      // REFACTOR MENU = Ctrl Shift R
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
@@ -28,25 +28,30 @@ class ClassCard extends StatelessWidget {
           padding: EdgeInsets.all(16),
           child: Row(
             children: [
+              Icon(
+                Icons.school,
+                color: Colors.white,
+              ),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start, // for esample
                   children: [
                     Text(
                       cls.title,
-                      style: TextStyle(fontSize: 30), // for example
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                    Text(cls.teacher?.name ?? ''),
+                    Text(
+                      'with ' + (cls.teacher?.name ?? ''),
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ],
                 ),
               ),
-              ClipOval(
-                child: Image.network(
-                  'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
-                  width: 60,
-                  height: 60,
-                ),
-              )
             ],
           ),
         ),

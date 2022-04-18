@@ -27,5 +27,7 @@ class Classes extends ChangeNotifier {
     });
 
     myClasses = res.data!.map((j) => Class.fromJson(j)).toList();
+    print('<> classes fetched');
+    notifyListeners();
   }
 }

@@ -19,14 +19,15 @@ class User {
   final String name;
   final String email;
   final String type;
+  final String fullName;
 
-  User({required this.name, required this.email, required this.type, required this.id});
+  User({required this.name, required this.email, required this.type, required this.id, required this.fullName});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
-final MOCK_USER = User(id: 0, email: 'mail@mail', name: 'Mock', type: 'student');
+final MOCK_USER = User(id: 0, email: 'mail@mail', name: 'Mock', type: 'student', fullName: 'Mock user');
 
 @JsonSerializable()
 class Class {

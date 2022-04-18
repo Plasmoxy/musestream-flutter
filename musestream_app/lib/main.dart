@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/debug.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:musestream_app/screens/login.dart';
+import 'package:musestream_app/screens/my_classes.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -12,9 +15,8 @@ void main() async {
   );
 
   // run
-  runApp(UncontrolledProviderScope(
+  runApp(ProviderScope(
     child: App(),
-    container: ProviderContainer(),
   ));
 }
 
@@ -23,13 +25,15 @@ class App extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final core = ref.watch(Core.provider);
+
     return MaterialApp(
       title: 'MuseStream',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: core.loggedIn ? Colors.blue : Colors.grey,
       ),
-      home: DebugScreen(),
+      home: core.loggedIn ? MyClassesScreen() : LoginScreen(),
     );
   }
 }

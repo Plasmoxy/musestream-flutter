@@ -14,7 +14,6 @@ class ApiErr implements Exception {
 }
 
 class Core extends ChangeNotifier {
-  int count = 0;
   final dio = Dio(BaseOptions(
     connectTimeout: 8000,
     receiveTimeout: 60000,
@@ -24,6 +23,7 @@ class Core extends ChangeNotifier {
   TokenData? loginData;
 
   bool get loggedIn => loginData != null;
+  User? get user => loginData?.user;
 
   Core() {
     // intercept error 401 for auth non logged
@@ -50,7 +50,11 @@ class Core extends ChangeNotifier {
         // guard unauthorized
         if (e.response?.statusCode == 401) {
           print('Unauthorized !!!');
+          throw ApiErr('You are not authorized.', e.response);
         }
+
+        if (e.type == DioErrorType.connectTimeout) throw ApiErr('Connection error.', null);
+        if (e.type == DioErrorType.receiveTimeout) throw ApiErr('Error receiving (timeout)', null);
 
         // handle custom status code hadnlers
         if (e.response != null && codeHandlers != null) {

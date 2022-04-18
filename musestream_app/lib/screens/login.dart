@@ -29,7 +29,7 @@ class LoginScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("MuseStream"),
       ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
@@ -79,7 +79,7 @@ class LoginScreen extends HookConsumerWidget {
                   child: Text(
                     'Sign up',
                   ),
-                  onPressed: () => navigatorPush(context, (c) => RegisterScreen()),
+                  onPressed: () => navigate(context, (c) => RegisterScreen()),
                 ),
               ],
             ),
