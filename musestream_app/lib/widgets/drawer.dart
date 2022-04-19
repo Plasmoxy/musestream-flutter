@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/screens/my_classes.dart';
+import 'package:musestream_app/screens/request_class.dart';
 import 'package:musestream_app/screens/rtc_test.dart';
 import 'package:musestream_app/screens/settings.dart';
 import 'package:musestream_app/utils/util.dart';
@@ -54,20 +55,31 @@ class AppDrawer extends HookConsumerWidget {
           ),
 
           // student
-          if (core.user?.type == 'student') ...[],
+          if (core.user?.type == 'student') ...[
+            ListTile(
+              title: const Text('Request class'),
+              onTap: () {
+                navigate(context, (ctx) => RequestClassesScreen(), replace: true, toFirst: true);
+              },
+            ),
+          ],
 
-          ListTile(
-            title: const Text('Debug screen'),
-            onTap: () {
-              navigate(context, (ctx) => DebugScreen(), replace: true, toFirst: true);
-            },
-          ),
-          ListTile(
-            title: const Text('RTC testing'),
-            onTap: () {
-              navigate(context, (ctx) => RTCTestScreen(), replace: true, toFirst: true);
-            },
-          ),
+          // admin
+          if (core.user?.type == 'admin') ...[
+            ListTile(
+              title: const Text('Debug screen'),
+              onTap: () {
+                navigate(context, (ctx) => DebugScreen(), replace: true, toFirst: true);
+              },
+            ),
+            ListTile(
+              title: const Text('RTC testing'),
+              onTap: () {
+                navigate(context, (ctx) => RTCTestScreen(), replace: true, toFirst: true);
+              },
+            ),
+          ],
+
           ListTile(
             title: const Text('Settings'),
             onTap: () {

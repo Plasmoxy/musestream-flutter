@@ -17,6 +17,7 @@ String? notEmpty(String? value) => value == null
         : null;
 
 final tsErr = TextStyle(fontWeight: FontWeight.bold, color: Colors.redAccent);
+final tsSucc = TextStyle(fontWeight: FontWeight.bold, color: Colors.green[600]);
 
 Future<void> showErrorDialog(BuildContext context, String message) {
   return showDialog<void>(

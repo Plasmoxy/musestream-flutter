@@ -84,7 +84,7 @@ class Core extends ChangeNotifier {
     dio.options.baseUrl = serverIp;
 
     final res = await handle(dio.post('/login', data: {'name': name, 'password': pass}), {
-      400: (r) => throw ApiErr('Wrong credentials!', r),
+      400: (r) => throw ApiErr('The username or password is incorrect!', r),
     });
 
     // setup login
@@ -101,11 +101,16 @@ class Core extends ChangeNotifier {
   Future<void> register(String name, String pass, String fullName, String serverIp) async {
     dio.options.baseUrl = serverIp;
 
-    await handle(dio.post('/register', data: {
-      'name': name,
-      'password': pass,
-      'fullName': fullName,
-    }));
+    await handle(
+      dio.post('/register', data: {
+        'name': name,
+        'password': pass,
+        'fullName': fullName,
+      }),
+      {
+        400: (r) => throw ApiErr('This username has already been used', r),
+      },
+    );
   }
 
   Future<void> logout() async {

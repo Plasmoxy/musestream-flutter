@@ -72,7 +72,7 @@ class LessonDetailsScreen extends HookConsumerWidget {
                         child: Text(core.user?.type == 'teacher'
                             ? 'Start call'
                             : lesson.roomId == null
-                                ? 'Teacher hasnt started call'
+                                ? 'The lesson hasn\'tstarted yet'
                                 : 'Join video call'),
                         onPressed: (core.user?.type == 'student' && lesson.roomId == null)
                             ? null

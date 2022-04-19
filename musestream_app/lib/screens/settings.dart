@@ -56,6 +56,7 @@ class SettingsScreen extends HookConsumerWidget {
                       label: Text('Full name'),
                     ),
                     controller: fullNameCtrl,
+                    validator: notEmpty,
                   ),
                   SizedBox(height: 16),
                   TextFormField(
@@ -64,6 +65,7 @@ class SettingsScreen extends HookConsumerWidget {
                       label: Text('Email'),
                     ),
                     controller: emailCtrl,
+                    validator: notEmpty,
                   ),
                   SizedBox(height: 10),
                   QueryDisplay<void>(
@@ -78,7 +80,7 @@ class SettingsScreen extends HookConsumerWidget {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.blue),
                         child: Text(
-                          'Update',
+                          'Confirm changes',
                         ),
                         onPressed: submit,
                       ),

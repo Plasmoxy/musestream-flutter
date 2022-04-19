@@ -22,9 +22,7 @@ class Classes extends ChangeNotifier {
   Future<void> getMine() async {
     print(core.dio.options.headers);
 
-    final res = await core.handle<List<dynamic>>(core.dio.get('/classes'), {
-      400: (r) => throw ApiErr('Wrong credentials!', r),
-    });
+    final res = await core.handle<List<dynamic>>(core.dio.get('/classes'));
 
     myClasses = res.data!.map((j) => Class.fromJson(j)).toList();
     print('<> classes fetched');
