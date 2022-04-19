@@ -108,7 +108,11 @@ class LessonDetailsScreen extends HookConsumerWidget {
                             ),
                             IconButton(
                               icon: Icon(Icons.delete, color: Colors.red),
-                              onPressed: qDelete.run,
+                              onPressed: () async {
+                                if (await showConfirmDialog(context, 'Delete lesson?', 'Are you sure?')) {
+                                  qDelete.run();
+                                }
+                              },
                             ),
                           ],
                         ),

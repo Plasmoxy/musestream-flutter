@@ -41,13 +41,7 @@ Future<void> showErrorDialog(BuildContext context, String message) {
   );
 }
 
-Future<bool> showConfirmDialog(
-  BuildContext context,
-  String? title,
-  String? content,
-  String yesText,
-  String noText,
-) async {
+Future<bool> showConfirmDialog(BuildContext context, String? title, String? content, [String yesText = 'Yes', String noText = 'No']) async {
   final diaResult = await showDialog(
     context: context,
     builder: (ctx) => AlertDialog(

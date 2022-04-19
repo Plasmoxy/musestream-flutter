@@ -6,6 +6,7 @@ import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/edit_class.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
+import 'package:musestream_app/screens/students_of_class.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
 
@@ -105,11 +106,22 @@ class ClassDetailsScreen extends HookConsumerWidget {
                       ),
                       IconButton(
                         icon: Icon(Icons.delete, color: Colors.red),
-                        onPressed: qDelete.run,
+                        onPressed: () async {
+                          if (await showConfirmDialog(context, 'Delete class?', 'Are you sure?')) {
+                            qDelete.run();
+                          }
+                        },
                       ),
                       ElevatedButton(
                         child: Text('Students of class'),
-                        onPressed: () {},
+                        onPressed: () async {
+                          await navigate(
+                              context,
+                              (ctx) => StudentsOfClassScreen(
+                                    classId: classId,
+                                  ));
+                          qClass.run();
+                        },
                       ),
                     ],
                   ),
