@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/screens/admin_home.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/request_class.dart';
 import 'package:musestream_app/screens/rtc_test.dart';
@@ -46,12 +47,13 @@ class AppDrawer extends HookConsumerWidget {
             ),
           ),
 
-          ListTile(
-            title: const Text('My classes'),
-            onTap: () {
-              navigate(context, (ctx) => MyClassesScreen(), replace: true, toFirst: true);
-            },
-          ),
+          if (core.user?.type == 'student' || core.user?.type == 'teacher')
+            ListTile(
+              title: const Text('My classes'),
+              onTap: () {
+                navigate(context, (ctx) => MyClassesScreen(), replace: true, toFirst: true);
+              },
+            ),
 
           // student
           if (core.user?.type == 'student') ...[
@@ -65,6 +67,12 @@ class AppDrawer extends HookConsumerWidget {
 
           // admin
           if (core.user?.type == 'admin') ...[
+            ListTile(
+              title: const Text('Users'),
+              onTap: () {
+                navigate(context, (ctx) => AdminHomeScreen(), replace: true, toFirst: true);
+              },
+            ),
             ListTile(
               title: const Text('RTC testing'),
               onTap: () {

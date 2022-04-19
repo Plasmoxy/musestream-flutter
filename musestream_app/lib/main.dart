@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:musestream_app/screens/admin_home.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,7 +67,11 @@ class App extends HookConsumerWidget {
                 : Colors.blue
             : Colors.grey,
       ),
-      home: core.loggedIn ? MyClassesScreen() : LoginScreen(),
+      home: core.loggedIn
+          ? core.loginData?.user.type == 'admin'
+              ? AdminHomeScreen()
+              : MyClassesScreen()
+          : LoginScreen(),
     );
   }
 }

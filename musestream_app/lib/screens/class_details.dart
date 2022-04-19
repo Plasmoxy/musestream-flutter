@@ -146,15 +146,17 @@ class ClassDetailsScreen extends HookConsumerWidget {
                   child: Text('Students of class'),
                   onPressed: () async {
                     await navigate(
-                        context,
-                        (ctx) => StudentsOfClassScreen(
-                              classId: classId,
-                            ));
+                      context,
+                      (ctx) => StudentsOfClassScreen(
+                        classId: classId,
+                      ),
+                    );
                     qClass.run();
                   },
                 ),
                 QueryDisplay(q: qDelete),
 
+                SizedBox(height: 16),
                 // requests
                 Text(
                   'Class Requests',
