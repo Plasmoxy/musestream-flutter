@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiErr implements Exception {
   String msg;
@@ -25,13 +28,21 @@ class Core extends ChangeNotifier {
   bool get loggedIn => loginData != null;
   User? get user => loginData?.user;
 
-  Core() {
+  Core({TokenData? initial, String? baseUrl}) {
     // intercept error 401 for auth non logged
     dio.interceptors.add(InterceptorsWrapper(onError: (e, handler) {
       print(e.toString());
       return handler.next(e);
     }));
-    dio.options.baseUrl = 'http://10.0.2.2';
+    dio.options.baseUrl = 'http://10.0.2.2'; // default for emulator
+
+    // from initial
+    if (initial != null && baseUrl != null) {
+      loginData = initial;
+      dio.options.headers['authorization'] = 'Bearer ${loginData!.token}';
+      dio.options.baseUrl = baseUrl;
+      print('Initialized core from previous data.');
+    }
   }
 
   static final provider = ChangeNotifierProvider((ref) {
@@ -50,7 +61,7 @@ class Core extends ChangeNotifier {
         // guard unauthorized
         if (e.response?.statusCode == 401) {
           print('Unauthorized !!!');
-          throw ApiErr('You are not authorized.', e.response);
+          throw ApiErr('You are not authorized, please log out and log in.', e.response);
         }
 
         if (e.type == DioErrorType.connectTimeout) throw ApiErr('Connection error.', null);
@@ -81,6 +92,9 @@ class Core extends ChangeNotifier {
     if (loginData != null) dio.options.headers['authorization'] = 'Bearer ${loginData!.token}';
 
     print('Logged in');
+
+    await savePrefs();
+    print('Saved to prefs');
     notifyListeners();
   }
 
@@ -97,6 +111,20 @@ class Core extends ChangeNotifier {
   Future<void> logout() async {
     loginData = null;
     dio.options.headers.remove('authorization');
+    await savePrefs();
+    print('Saved to prefs');
     notifyListeners();
+  }
+
+  Future<void> savePrefs() async {
+    final p = await SharedPreferences.getInstance();
+
+    await p.setString('baseUrl', dio.options.baseUrl);
+    if (loginData != null) {
+      await p.setString('loginData', jsonEncode(loginData!.toJson()));
+    } else {
+      await p.remove('loginData');
+      await p.remove('baseUrl');
+    }
   }
 }
