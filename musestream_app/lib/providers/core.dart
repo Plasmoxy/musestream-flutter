@@ -84,6 +84,16 @@ class Core extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> register(String name, String pass, String fullName, String serverIp) async {
+    dio.options.baseUrl = serverIp;
+
+    await handle(dio.post('/register', data: {
+      'name': name,
+      'password': pass,
+      'fullName': fullName,
+    }));
+  }
+
   Future<void> logout() async {
     loginData = null;
     dio.options.headers.remove('authorization');

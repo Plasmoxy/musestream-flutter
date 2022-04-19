@@ -78,6 +78,33 @@ Future<bool> showConfirmDialog(
   return diaResult ?? false;
 }
 
+Future<void> showInfoDialog(
+  BuildContext context,
+  String? title,
+  String? content,
+) async {
+  await showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: title == null ? null : Text(title),
+      content: content == null ? null : Text(content),
+      actions: <Widget>[
+        TextButton(
+            child: Text(
+              'OK',
+              style: TextStyle(
+                color: Colors.blue[800],
+              ),
+            ),
+            onPressed: () {
+              // showDialog returns the future of navigator pop
+              Navigator.of(ctx).pop();
+            }),
+      ],
+    ),
+  );
+}
+
 String formatDate(DateTime date) {
   return DateFormat("EEE dd. MM. yyyy HH:MM").format(date);
 }

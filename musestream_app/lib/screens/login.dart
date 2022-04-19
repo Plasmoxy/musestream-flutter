@@ -20,7 +20,7 @@ class LoginScreen extends HookConsumerWidget {
 
     final queryLogin = useQuery(useCallback(
       () => core.login(nameCtrl.text, passwordCtrl.text, serverCtrl.text),
-      [nameCtrl.text, passwordCtrl.text],
+      [],
     ));
 
     final submit = useCallback(() {
