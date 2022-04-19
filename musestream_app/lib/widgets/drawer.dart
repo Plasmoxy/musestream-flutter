@@ -4,6 +4,7 @@ import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/rtc_test.dart';
+import 'package:musestream_app/screens/settings.dart';
 import 'package:musestream_app/utils/util.dart';
 
 class AppDrawer extends HookConsumerWidget {
@@ -65,6 +66,12 @@ class AppDrawer extends HookConsumerWidget {
             title: const Text('RTC testing'),
             onTap: () {
               navigate(context, (ctx) => RTCTestScreen(), replace: true, toFirst: true);
+            },
+          ),
+          ListTile(
+            title: const Text('Settings'),
+            onTap: () {
+              navigate(context, (ctx) => SettingsScreen(), replace: true, toFirst: true);
             },
           ),
           ListTile(

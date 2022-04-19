@@ -36,11 +36,11 @@ class LessonCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start, // for esample
                   children: [
                     Text(
-                      'Start - ' + formatDate(less.start),
+                      'Start: ' + formatDate(less.start),
                       style: TextStyle(fontSize: 16), // for example
                     ),
                     Text(
-                      'End - ' + formatDate(less.end),
+                      'End:   ' + formatDate(less.end),
                       style: TextStyle(fontSize: 16), // for example
                     ),
 
