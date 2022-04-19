@@ -17,6 +17,7 @@ class ClassDetailsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final targetRequest = useRef<ClassRequest?>(null);
 
     final qClass = useQuery(
       useCallback(() async {
@@ -43,6 +44,32 @@ class ClassDetailsScreen extends HookConsumerWidget {
       },
     );
 
+    final qClassRequests = useQuery<List<ClassRequest>>(
+      useCallback(() async {
+        final resp = await core.handle(core.dio.get<List<dynamic>>('/classes/$classId/requests'));
+        return resp.data!.map((j) => ClassRequest.fromJson(j)).toList();
+      }, [core]),
+      activate: true,
+    );
+
+    final qDeleteRequest = useQuery<void>(
+      useCallback(() async {
+        await core.handle(core.dio.delete('/requests/${targetRequest.value?.id}'));
+      }, [core]),
+      onSuccess: (v) async {
+        qClassRequests.run();
+      },
+    );
+
+    final qAcceptRequest = useQuery<void>(
+      useCallback(() async {
+        await core.handle(core.dio.post('/requests/${targetRequest.value?.id}'));
+      }, [core]),
+      onSuccess: (v) async {
+        qClassRequests.run();
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Class Details'),
@@ -51,6 +78,7 @@ class ClassDetailsScreen extends HookConsumerWidget {
               onPressed: () {
                 qLessons.run();
                 qClass.run();
+                qClassRequests.run();
               },
               icon: Icon(Icons.refresh))
         ],
@@ -112,21 +140,73 @@ class ClassDetailsScreen extends HookConsumerWidget {
                           }
                         },
                       ),
-                      ElevatedButton(
-                        child: Text('Students of class'),
-                        onPressed: () async {
-                          await navigate(
-                              context,
-                              (ctx) => StudentsOfClassScreen(
-                                    classId: classId,
-                                  ));
-                          qClass.run();
-                        },
-                      ),
                     ],
                   ),
-
+                ElevatedButton(
+                  child: Text('Students of class'),
+                  onPressed: () async {
+                    await navigate(
+                        context,
+                        (ctx) => StudentsOfClassScreen(
+                              classId: classId,
+                            ));
+                    qClass.run();
+                  },
+                ),
                 QueryDisplay(q: qDelete),
+
+                // requests
+                Text(
+                  'Class Requests',
+                  style: TextStyle(fontSize: 25),
+                ),
+                SizedBox(height: 8),
+                QueryDisplay<List<ClassRequest>>(
+                  q: qClassRequests,
+                  val: (reqs) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: reqs!
+                        .map((r) => Container(
+                              width: double.infinity,
+                              child: Card(
+                                margin: EdgeInsets.all(8),
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text('From: ${r.student?.fullName}'),
+                                            Text('Message: ${r.message}'),
+                                          ],
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.done),
+                                        onPressed: () async {
+                                          targetRequest.value = r;
+                                          qAcceptRequest.run();
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.close),
+                                        onPressed: () async {
+                                          targetRequest.value = r;
+                                          qDeleteRequest.run();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                QueryDisplay(q: qAcceptRequest),
+                QueryDisplay(q: qDeleteRequest),
 
                 // lessons
                 SizedBox(height: 8),
