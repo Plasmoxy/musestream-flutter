@@ -78,18 +78,19 @@ class ClassStudent {
 }
 
 @JsonSerializable()
-class RequestClass {
+class ClassRequest {
   final int classId;
   final int studentId;
   final String date;
   final String message;
 
-  RequestClass({
-    required this.classId,
-    required this.studentId,
-    required this.date,
-    required this.message,
-  });
+  @JsonKey(name: 'class')
+  final Class? classObj;
 
-  // TODO jsonn
+  final User? student;
+
+  ClassRequest({required this.classId, required this.studentId, required this.date, required this.message, this.classObj, this.student});
+
+  factory ClassRequest.fromJson(Map<String, dynamic> json) => _$ClassRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$ClassRequestToJson(this);
 }

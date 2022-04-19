@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/screens/lessons_of_student.dart';
+import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/user_card.dart';
 
 class StudentsOfClassScreen extends HookConsumerWidget {
@@ -46,7 +48,10 @@ class StudentsOfClassScreen extends HookConsumerWidget {
               ...students!
                   .map((s) => UserCard(
                         usr: s,
-                        onTap: () async {},
+                        onTap: () async {
+                          await navigate(context, (ctx) => StudentLessonsScreen(studentId: s.id, classId: classId));
+                          qStudents.run();
+                        },
                         onDelete: () async {
                           toDelId.value = s.id;
                           qDelete.run();

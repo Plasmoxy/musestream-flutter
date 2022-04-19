@@ -91,17 +91,25 @@ Map<String, dynamic> _$ClassStudentToJson(ClassStudent instance) =>
       'student': instance.student,
     };
 
-RequestClass _$RequestClassFromJson(Map<String, dynamic> json) => RequestClass(
+ClassRequest _$ClassRequestFromJson(Map<String, dynamic> json) => ClassRequest(
       classId: json['classId'] as int,
       studentId: json['studentId'] as int,
       date: json['date'] as String,
       message: json['message'] as String,
+      classObj: json['class'] == null
+          ? null
+          : Class.fromJson(json['class'] as Map<String, dynamic>),
+      student: json['student'] == null
+          ? null
+          : User.fromJson(json['student'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$RequestClassToJson(RequestClass instance) =>
+Map<String, dynamic> _$ClassRequestToJson(ClassRequest instance) =>
     <String, dynamic>{
       'classId': instance.classId,
       'studentId': instance.studentId,
       'date': instance.date,
       'message': instance.message,
+      'class': instance.classObj,
+      'student': instance.student,
     };

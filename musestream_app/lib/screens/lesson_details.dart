@@ -101,6 +101,7 @@ class LessonDetailsScreen extends HookConsumerWidget {
                                   (ctx) => EditLessonScreen(
                                     toEdit: lesson,
                                     classId: classId,
+                                    studentId: lesson.classStudent!.studentId,
                                   ),
                                 );
                                 qLesson.run();

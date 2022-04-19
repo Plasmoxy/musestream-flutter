@@ -10,8 +10,9 @@ class EditLessonScreen extends HookConsumerWidget {
   // pass if edit, otherwise create
   final Lesson? toEdit;
   final int classId;
+  final int studentId;
 
-  const EditLessonScreen({Key? key, this.toEdit, required this.classId}) : super(key: key);
+  const EditLessonScreen({Key? key, this.toEdit, required this.classId, required this.studentId}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,8 +25,9 @@ class EditLessonScreen extends HookConsumerWidget {
     final queryUpdate = useQuery<void>(
       useCallback(() async {
         if (toEdit == null) {
+          print('/classes/$classId/students/$studentId/lessons');
           // create
-          await core.handle(core.dio.post('/classes/$classId/students/${core.user?.id}/lessons', data: {
+          await core.handle(core.dio.post('/classes/$classId/students/$studentId/lessons', data: {
             'notes': notes.text,
             'start': start.value.toIso8601String(),
             'end': end.value.toIso8601String(),
