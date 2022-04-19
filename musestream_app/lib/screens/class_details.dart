@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/screens/edit_class.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
@@ -30,6 +31,15 @@ class ClassDetailsScreen extends HookConsumerWidget {
         return resp.data?.map((j) => Lesson.fromJson(j)).toList();
       }, [core]),
       activate: qClass.value != null,
+    );
+
+    final qDelete = useQuery<void>(
+      useCallback(() async {
+        await core.handle(core.dio.delete('/classes/$classId'));
+      }, [core]),
+      onSuccess: (v) async {
+        Navigator.of(context).pop();
+      },
     );
 
     return Scaffold(
@@ -84,23 +94,30 @@ class ClassDetailsScreen extends HookConsumerWidget {
 
                 // actions
                 if (core.user?.type == 'teacher')
-                  Container(
-                    padding: const EdgeInsets.only(left: 36.0),
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                          child: Text('Delete'),
-                          onPressed: () {},
-                        ),
-                        ElevatedButton(
-                          child: Text('Students of class'),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () async {
+                          await navigate(context, (ctx) => EditClassScreen(toEdit: cls));
+                          qClass.run();
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: qDelete.run,
+                      ),
+                      ElevatedButton(
+                        child: Text('Students of class'),
+                        onPressed: () {},
+                      ),
+                    ],
                   ),
 
+                QueryDisplay(q: qDelete),
+
                 // lessons
+                SizedBox(height: 8),
                 Text(
                   'Lessons',
                   style: TextStyle(fontSize: 25),
@@ -108,10 +125,10 @@ class ClassDetailsScreen extends HookConsumerWidget {
                 SizedBox(height: 8),
                 QueryDisplay(q: qLessons),
                 if (qLessons.value != null)
-                  ...qLessons.value!.map((l) => LessonCard(
+                  ...qLessons.value!.reversed.map((l) => LessonCard(
                         less: l,
                         onTap: () async {
-                          await navigate(context, (c) => LessonDetailsScreen(lessonId: l.id));
+                          await navigate(context, (c) => LessonDetailsScreen(lessonId: l.id, classId: cls.id));
                           qLessons.run();
                         },
                       )),

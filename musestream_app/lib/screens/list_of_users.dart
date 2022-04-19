@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:musestream_app/models/models.dart';
-import 'package:musestream_app/screens/debug.dart';
-import 'package:musestream_app/widgets/lesson_card.dart';
-import 'package:musestream_app/widgets/user_card.dart';
 
 class ListOfUsersScreen extends StatefulWidget {
   ListOfUsersScreen({Key? key}) : super(key: key);

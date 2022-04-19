@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:musestream_app/models/models.dart';
-import 'package:musestream_app/screens/debug.dart';
-import 'package:musestream_app/widgets/lesson_card.dart';
 
 class LessonsOfStudentScreen extends StatefulWidget {
   LessonsOfStudentScreen({Key? key}) : super(key: key);

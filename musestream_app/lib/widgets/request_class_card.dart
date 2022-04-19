@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:musestream_app/models/models.dart';
-import 'package:musestream_app/screens/debug.dart';
 
 // Component to render a class
 class RequestClassCard extends StatelessWidget {
@@ -16,11 +15,7 @@ class RequestClassCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) => DebugScreen(),
-          ));
-        },
+        onTap: () {},
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.all(16),

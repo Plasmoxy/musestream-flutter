@@ -107,5 +107,5 @@ Future<void> showInfoDialog(
 }
 
 String formatDate(DateTime date) {
-  return DateFormat("EEE dd. MM. yyyy - HH:MM").format(date);
+  return DateFormat("EEE dd. MM. yyyy - HH:mm").format(date);
 }

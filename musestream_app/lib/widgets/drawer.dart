@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/providers/core.dart';
-import 'package:musestream_app/screens/debug.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/request_class.dart';
 import 'package:musestream_app/screens/rtc_test.dart';
@@ -67,12 +66,6 @@ class AppDrawer extends HookConsumerWidget {
           // admin
           if (core.user?.type == 'admin') ...[
             ListTile(
-              title: const Text('Debug screen'),
-              onTap: () {
-                navigate(context, (ctx) => DebugScreen(), replace: true, toFirst: true);
-              },
-            ),
-            ListTile(
               title: const Text('RTC testing'),
               onTap: () {
                 navigate(context, (ctx) => RTCTestScreen(), replace: true, toFirst: true);
@@ -88,8 +81,8 @@ class AppDrawer extends HookConsumerWidget {
           ),
           ListTile(
             title: const Text('Log out'),
-            onTap: () {
-              core.logout();
+            onTap: () async {
+              await core.logout();
             },
           ),
           Padding(

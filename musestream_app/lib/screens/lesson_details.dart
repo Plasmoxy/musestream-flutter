@@ -5,12 +5,14 @@ import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/call_screen.dart';
+import 'package:musestream_app/screens/edit_lesson.dart';
 import 'package:musestream_app/utils/util.dart';
 
 class LessonDetailsScreen extends HookConsumerWidget {
   final int lessonId;
+  final int classId;
 
-  const LessonDetailsScreen({Key? key, required this.lessonId}) : super(key: key);
+  const LessonDetailsScreen({Key? key, required this.lessonId, required this.classId}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,6 +26,15 @@ class LessonDetailsScreen extends HookConsumerWidget {
       activate: true,
     );
 
+    final qDelete = useQuery<void>(
+      useCallback(() async {
+        await core.handle(core.dio.delete('/lessons/$lessonId'));
+      }, [core]),
+      onSuccess: (v) async {
+        Navigator.of(context).pop();
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Lesson'),
@@ -35,32 +46,28 @@ class LessonDetailsScreen extends HookConsumerWidget {
           val: (lesson) => Column(
             children: [
               Container(
-                child: InkWell(
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(36),
-                    child: Row(
-                      children: [
-                        Icon(Icons.timer, size: 32),
-                        SizedBox(width: 32),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Start: ' + formatDate(lesson!.start),
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                'End: ' + formatDate(lesson.end),
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
+                width: double.infinity,
+                padding: EdgeInsets.all(36),
+                child: Row(
+                  children: [
+                    Icon(Icons.timer, size: 32),
+                    SizedBox(width: 32),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Start: ' + formatDate(lesson!.start),
+                            style: TextStyle(fontSize: 16),
                           ),
-                        ),
-                      ],
+                          Text(
+                            'End: ' + formatDate(lesson.end),
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
               Container(
@@ -81,15 +88,33 @@ class LessonDetailsScreen extends HookConsumerWidget {
                                 qLesson.run();
                               },
                       ),
+
+                      // actions
                       if (core.user?.type == 'teacher')
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          color: Colors.redAccent,
-                          onPressed: () => {},
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit, color: Colors.blue),
+                              onPressed: () async {
+                                await navigate(
+                                  context,
+                                  (ctx) => EditLessonScreen(
+                                    toEdit: lesson,
+                                    classId: classId,
+                                  ),
+                                );
+                                qLesson.run();
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Colors.red),
+                              onPressed: qDelete.run,
+                            ),
+                          ],
                         ),
                     ],
                   ),
-                  Text(lesson.toJson().toString()),
+                  QueryDisplay(q: qDelete),
                   SizedBox(height: 16),
                   Text(
                     'Notes:',

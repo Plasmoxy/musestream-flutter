@@ -5,6 +5,7 @@ import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/providers/classes.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/class_details.dart';
+import 'package:musestream_app/screens/edit_class.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/class_card.dart';
 import 'package:musestream_app/widgets/drawer.dart';
@@ -33,7 +34,7 @@ class MyClassesScreen extends HookConsumerWidget {
               q: queryMine,
             ),
             SizedBox(height: 16),
-            ...cls.myClasses.map((c) => ClassCard(
+            ...cls.myClasses.reversed.map((c) => ClassCard(
                   cls: c,
                   onTap: () async {
                     await navigate(context, (ctx) => ClassDetailsScreen(classId: c.id));
@@ -45,7 +46,10 @@ class MyClassesScreen extends HookConsumerWidget {
       ),
       floatingActionButton: core.loginData?.user.type == 'teacher'
           ? FloatingActionButton(
-              onPressed: () {},
+              onPressed: () async {
+                await navigate(context, (ctx) => EditClassScreen());
+                queryMine.run();
+              },
               backgroundColor: Colors.blue,
               child: const Icon(Icons.add),
             )

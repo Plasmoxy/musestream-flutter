@@ -60,7 +60,11 @@ class App extends HookConsumerWidget {
       title: 'MuseStream',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: core.loggedIn ? Colors.blue : Colors.grey,
+        primarySwatch: core.loggedIn
+            ? core.loginData?.user.type == 'teacher'
+                ? Colors.purple
+                : Colors.blue
+            : Colors.grey,
       ),
       home: core.loggedIn ? MyClassesScreen() : LoginScreen(),
     );
