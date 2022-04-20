@@ -95,3 +95,16 @@ class ClassRequest {
   factory ClassRequest.fromJson(Map<String, dynamic> json) => _$ClassRequestFromJson(json);
   Map<String, dynamic> toJson() => _$ClassRequestToJson(this);
 }
+
+@JsonSerializable()
+class ClassFile {
+  final int id;
+  final int classId;
+  final String title;
+  final String path;
+
+  ClassFile({required this.id, required this.classId, required this.title, required this.path});
+
+  factory ClassFile.fromJson(Map<String, dynamic> json) => _$ClassFileFromJson(json);
+  Map<String, dynamic> toJson() => _$ClassFileToJson(this);
+}

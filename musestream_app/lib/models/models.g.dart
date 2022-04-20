@@ -115,3 +115,17 @@ Map<String, dynamic> _$ClassRequestToJson(ClassRequest instance) =>
       'class': instance.classObj,
       'student': instance.student,
     };
+
+ClassFile _$ClassFileFromJson(Map<String, dynamic> json) => ClassFile(
+      id: json['id'] as int,
+      classId: json['classId'] as int,
+      title: json['title'] as String,
+      path: json['path'] as String,
+    );
+
+Map<String, dynamic> _$ClassFileToJson(ClassFile instance) => <String, dynamic>{
+      'id': instance.id,
+      'classId': instance.classId,
+      'title': instance.title,
+      'path': instance.path,
+    };

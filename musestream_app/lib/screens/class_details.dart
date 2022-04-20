@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/screens/class_files.dart';
 import 'package:musestream_app/screens/edit_class.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/screens/students_of_class.dart';
@@ -122,7 +123,7 @@ class ClassDetailsScreen extends HookConsumerWidget {
                 ),
 
                 // actions
-                if (core.user?.type == 'teacher')
+                if (core.user?.type == 'teacher') ...[
                   Row(
                     children: [
                       IconButton(
@@ -142,19 +143,35 @@ class ClassDetailsScreen extends HookConsumerWidget {
                       ),
                     ],
                   ),
+                  ElevatedButton(
+                    child: Text('Students of class'),
+                    onPressed: () async {
+                      await navigate(
+                        context,
+                        (ctx) => StudentsOfClassScreen(
+                          classId: classId,
+                        ),
+                      );
+                      qClass.run();
+                    },
+                  ),
+                ],
+                QueryDisplay(q: qDelete),
+
+                // files
                 ElevatedButton(
-                  child: Text('Students of class'),
+                  child: Text('Class files'),
+                  style: ElevatedButton.styleFrom(primary: Colors.teal),
                   onPressed: () async {
                     await navigate(
                       context,
-                      (ctx) => StudentsOfClassScreen(
+                      (ctx) => ClassFilesScreen(
                         classId: classId,
                       ),
                     );
                     qClass.run();
                   },
                 ),
-                QueryDisplay(q: qDelete),
 
                 SizedBox(height: 16),
                 // requests
