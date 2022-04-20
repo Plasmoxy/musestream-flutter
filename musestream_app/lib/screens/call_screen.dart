@@ -91,18 +91,7 @@ class CallScreen extends HookConsumerWidget {
             children: [
               Expanded(
                 child: SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: RTCVideoView(
-                    _localRenderer,
-                    mirror: true,
-                    objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: 200,
+                  height: 300,
                   width: 200,
                   child: RTCVideoView(
                     _remoteRenderer,
@@ -113,9 +102,33 @@ class CallScreen extends HookConsumerWidget {
               ),
             ],
           ),
+          SizedBox(
+            height: 100,
+            width: 100,
+            child: RTCVideoView(
+              _localRenderer,
+              mirror: true,
+              objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+            ),
+          ),
           SizedBox(height: 16),
           QueryDisplay(q: qLesson),
-          Text('Connection state: ${connectionState.value?.toString() ?? 'Peer not connected'}'),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: (connectionState.value == RTCPeerConnectionState.RTCPeerConnectionStateClosed)
+                ? Text('Connection: Cloased')
+                : (connectionState.value == RTCPeerConnectionState.RTCPeerConnectionStateConnected)
+                    ? Text('Connection: Connected')
+                    : (connectionState.value == RTCPeerConnectionState.RTCPeerConnectionStateConnecting)
+                        ? Text('Connection: Connecting')
+                        : (connectionState.value == RTCPeerConnectionState.RTCPeerConnectionStateDisconnected)
+                            ? Text('Connection: Disconnected')
+                            : (connectionState.value == RTCPeerConnectionState.RTCPeerConnectionStateFailed)
+                                ? Text('Connection: Failed')
+                                : (connectionState.value == RTCPeerConnectionState.RTCPeerConnectionStateNew)
+                                    ? Text('Connection: New')
+                                    : Text('Connection: Peer not connected'),
+          ),
         ],
       ),
     );
