@@ -174,58 +174,61 @@ class ClassDetailsScreen extends HookConsumerWidget {
                 ),
 
                 SizedBox(height: 16),
-                // requests
-                Text(
-                  'Class Requests',
-                  style: TextStyle(fontSize: 25),
-                ),
-                SizedBox(height: 8),
-                QueryDisplay<List<ClassRequest>>(
-                  q: qClassRequests,
-                  val: (reqs) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: reqs!
-                        .map((r) => Container(
-                              width: double.infinity,
-                              child: Card(
-                                margin: EdgeInsets.all(8),
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text('From: ${r.student?.fullName}'),
-                                            Text('Message: ${r.message}'),
-                                          ],
+
+                if (core.user?.type == 'teacher') ...[
+                  // requests
+                  Text(
+                    'Class Requests',
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  SizedBox(height: 8),
+                  QueryDisplay<List<ClassRequest>>(
+                    q: qClassRequests,
+                    val: (reqs) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: reqs!
+                          .map((r) => Container(
+                                width: double.infinity,
+                                child: Card(
+                                  margin: EdgeInsets.all(8),
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text('From: ${r.student?.fullName}'),
+                                              Text('Message: ${r.message}'),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.done),
-                                        onPressed: () async {
-                                          targetRequest.value = r;
-                                          qAcceptRequest.run();
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.close),
-                                        onPressed: () async {
-                                          targetRequest.value = r;
-                                          qDeleteRequest.run();
-                                        },
-                                      ),
-                                    ],
+                                        IconButton(
+                                          icon: Icon(Icons.done),
+                                          onPressed: () async {
+                                            targetRequest.value = r;
+                                            qAcceptRequest.run();
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () async {
+                                            targetRequest.value = r;
+                                            qDeleteRequest.run();
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ))
-                        .toList(),
+                              ))
+                          .toList(),
+                    ),
                   ),
-                ),
-                QueryDisplay(q: qAcceptRequest),
-                QueryDisplay(q: qDeleteRequest),
+                  QueryDisplay(q: qAcceptRequest),
+                  QueryDisplay(q: qDeleteRequest),
+                ],
 
                 // lessons
                 SizedBox(height: 8),
