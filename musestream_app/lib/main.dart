@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
+import 'package:musestream_app/providers/classes.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:musestream_app/screens/admin_home.dart';

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -18,12 +19,14 @@ class ApiErr implements Exception {
 
 class Core extends ChangeNotifier {
   final dio = Dio(BaseOptions(
-    connectTimeout: 8000,
-    receiveTimeout: 60000,
+    connectTimeout: 2000,
+    receiveTimeout: 10000,
   ));
 
   // user stuff
   TokenData? loginData;
+
+  bool online = false;
 
   bool get loggedIn => loginData != null;
   User? get user => loginData?.user;
@@ -49,13 +52,20 @@ class Core extends ChangeNotifier {
     return Core();
   });
 
-  String get debug => 'logged: $loggedIn\nuser: ${loginData?.user.name}\ntype: ${loginData?.user.type}';
+  String get debug => 'logged: $loggedIn\nuser: ${loginData?.user.name}\ntype: ${loginData?.user.type}\nonline: $online';
 
   // generic handler for server data
   // pass optional status code handler map and throw apierr using them to ez UI display
   Future<Response<T>> handle<T>(Future<Response<T>> future, [Map<int, dynamic Function(Response<dynamic>)>? codeHandlers]) async {
     try {
-      return await future;
+      final result = await future;
+
+      if (!online) {
+        online = true;
+        notifyListeners();
+      }
+
+      return result;
     } catch (e) {
       if (e is DioError) {
         // guard unauthorized
@@ -64,8 +74,27 @@ class Core extends ChangeNotifier {
           throw ApiErr('You are not authorized, please log out and log in.', e.response);
         }
 
-        if (e.type == DioErrorType.connectTimeout) throw ApiErr('Connection error.', null);
-        if (e.type == DioErrorType.receiveTimeout) throw ApiErr('Error receiving (timeout)', null);
+        if (e.type == DioErrorType.connectTimeout) {
+          if (online) {
+            online = false;
+            notifyListeners();
+          }
+          throw ApiErr('Connection error.', null);
+        }
+        if (e.type == DioErrorType.receiveTimeout) {
+          if (online) {
+            online = false;
+            notifyListeners();
+          }
+          throw ApiErr('Error receiving (timeout)', null);
+        }
+        if (e.type == DioErrorType.other && e.error is SocketException) {
+          if (online) {
+            online = false;
+            notifyListeners();
+          }
+          throw ApiErr('Connection error', null);
+        }
 
         // handle custom status code hadnlers
         if (e.response != null && codeHandlers != null) {
