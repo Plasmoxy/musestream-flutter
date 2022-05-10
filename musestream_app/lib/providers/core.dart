@@ -79,7 +79,7 @@ class Core extends ChangeNotifier {
             online = false;
             notifyListeners();
           }
-          throw ApiErr('Connection error.', null);
+          throw ApiErr('Connection error', null);
         }
         if (e.type == DioErrorType.receiveTimeout) {
           if (online) {

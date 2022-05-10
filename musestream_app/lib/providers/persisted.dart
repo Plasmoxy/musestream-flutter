@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-abstract class Persisted<KeyType, T> {
+abstract class Persisted<String, T> {
   String get persistId;
-  Map<KeyType, T> items = {};
+  Map<String, T> items = {};
 
   T fromJson(dynamic j);
   dynamic toJson(T t);
@@ -19,7 +19,7 @@ abstract class Persisted<KeyType, T> {
     if (await file.exists()) {
       try {
         final jsonString = await file.readAsString();
-        final decoded = jsonDecode(jsonString) as Map<KeyType, dynamic>;
+        final decoded = jsonDecode(jsonString) as Map<String, dynamic>;
         items = Map.fromEntries(decoded.entries.map((e) => MapEntry(e.key, fromJson(e.value))));
         print("Loaded $persistId from cache file.");
       } catch (e) {

@@ -35,7 +35,16 @@ class Classes extends ChangeNotifier with Persisted<String, Class> {
     final res = await core.handle<List<dynamic>>(core.dio.get('/classes'));
     items = {for (var c in res.data!.map((j) => Class.fromJson(j))) c.id.toString(): c};
     print('<> classes fetched');
-    await save();
+    save();
     notifyListeners();
+  }
+
+  Future<void> fetchOne(int id) async {
+    final resp = await core.handle(core.dio.get<dynamic>('/classes/$id'));
+    final c = Class.fromJson(resp.data);
+    items[c.id.toString()] = c;
+    save();
+    notifyListeners();
+    print('Fetched one class $id');
   }
 }
