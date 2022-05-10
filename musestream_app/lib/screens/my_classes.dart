@@ -34,7 +34,7 @@ class MyClassesScreen extends HookConsumerWidget {
               q: queryMine,
             ),
             SizedBox(height: 16),
-            ...cls.myClasses.reversed.map((c) => ClassCard(
+            ...cls.items.values.toList().reversed.map((c) => ClassCard(
                   cls: c,
                   onTap: () async {
                     await navigate(context, (ctx) => ClassDetailsScreen(classId: c.id));

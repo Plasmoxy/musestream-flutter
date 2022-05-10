@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-abstract class Persisted<T> {
+abstract class Persisted<KeyType, T> {
   String get persistId;
-  List<T> items = [];
+  Map<KeyType, T> items = {};
 
   T fromJson(dynamic j);
   dynamic toJson(T t);
@@ -19,24 +19,25 @@ abstract class Persisted<T> {
     if (await file.exists()) {
       try {
         final jsonString = await file.readAsString();
-        final arr = jsonDecode(jsonString) as List<dynamic>;
-        items = arr.map((j) => fromJson(j)).toList();
+        final decoded = jsonDecode(jsonString) as Map<KeyType, dynamic>;
+        items = Map.fromEntries(decoded.entries.map((e) => MapEntry(e.key, fromJson(e.value))));
         print("Loaded $persistId from cache file.");
       } catch (e) {
         print("ERROR loading $persistId json file, clearing it.");
+        print(e);
         await file.delete();
-        items = [];
+        items = {};
       }
     } else {
       print("$persistId file doesn't exist, emptying $persistId.");
-      items = [];
+      items = {};
     }
   }
 
   Future<void> save() async {
     final file = await _file;
-    final jsonList = items.map((x) => toJson(x)).toList();
-    final jsonString = jsonEncode(jsonList);
+    final outmap = {for (final entry in items.entries) entry.key.toString(): toJson(entry.value)};
+    final jsonString = jsonEncode(outmap);
     await file.writeAsString(jsonString);
     print("Saved $persistId to file.");
   }
