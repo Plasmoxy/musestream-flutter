@@ -7,6 +7,7 @@ import 'package:musestream_app/providers/classes.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/providers/lessons.dart';
 import 'package:musestream_app/providers/requests.dart';
+import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/screens/class_files.dart';
 import 'package:musestream_app/screens/edit_class.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
@@ -22,6 +23,7 @@ class ClassDetailsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final transactions = ref.watch(Transactions.provider);
     final classes = ref.watch(Classes.provider);
     final lessons = ref.watch(Lessons.provider);
     final requests = ref.watch(Requests.provider);
@@ -39,25 +41,26 @@ class ClassDetailsScreen extends HookConsumerWidget {
     );
 
     final qDelete = useQuery<void>(
-      useCallback(() => core.handle(core.dio.delete('/classes/$classId')), [core]),
+      useCallback(() => transactions.make(() => core.handle(core.dio.delete('/classes/$classId'))), [core]),
       onSuccess: (v) async {
         Navigator.of(context).pop();
       },
     );
 
     final qDeleteRequest = useQuery<void>(
-      useCallback(() async {
-        await core.handle(core.dio.delete('/requests/${targetRequest.value?.id}'));
-      }, [core]),
+      useCallback(
+        () => transactions.make(
+          () => core.handle(core.dio.delete('/requests/${targetRequest.value?.id}')),
+        ),
+        [core],
+      ),
       onSuccess: (v) async {
         qClassRequests.run();
       },
     );
 
     final qAcceptRequest = useQuery<void>(
-      useCallback(() async {
-        await core.handle(core.dio.post('/requests/${targetRequest.value?.id}'));
-      }, [core]),
+      useCallback(() => transactions.make(() => core.handle(core.dio.post('/requests/${targetRequest.value?.id}'))), [core]),
       onSuccess: (v) async {
         qClassRequests.run();
       },

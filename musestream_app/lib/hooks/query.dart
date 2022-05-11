@@ -11,6 +11,7 @@ class QueryDisplay<T> extends HookConsumerWidget {
   final Widget? Function()? loading;
   final Widget? Function(T?)? val;
   final Widget? Function(QueryHookState)? err;
+  final bool offlineErr;
 
   const QueryDisplay({
     Key? key,
@@ -18,6 +19,7 @@ class QueryDisplay<T> extends HookConsumerWidget {
     this.loading,
     this.val,
     this.err,
+    this.offlineErr = false,
   }) : super(key: key);
 
   @override
@@ -54,12 +56,12 @@ class QueryDisplay<T> extends HookConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // DO NOT DISPLAY CONNECTION ERROR WHEN OFFLINE, WE KNOW THAT OFC - or do we ?
-              // if (core.online || q.errMsg != 'Connection error')
-              Text(
-                q.errMsg,
-                style: tsErr,
-              ),
+              // display connection error only when online
+              if (core.online || (q.errMsg != 'Connection error'))
+                Text(
+                  q.errMsg,
+                  style: tsErr,
+                ),
             ],
           ),
         );
