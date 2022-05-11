@@ -12,6 +12,7 @@ import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/screens/students_of_class.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
+import 'package:musestream_app/widgets/netstatus.dart';
 
 class ClassDetailsScreen extends HookConsumerWidget {
   final int classId;
@@ -27,24 +28,11 @@ class ClassDetailsScreen extends HookConsumerWidget {
     final cls = classes.items[classId.toString()];
     final lessonsItems = lessons.getByClass(classId);
 
-    final qClass = useQuery(
-      useCallback(() async {
-        await classes.fetchOne(classId);
-      }, [core]),
-      activate: true,
-    );
-
-    final qLessons = useQuery(
-      useCallback(() async {
-        await lessons.fetchLessons(classId);
-      }, [core]),
-      activate: true,
-    );
+    final qClass = useQuery(useCallback(() => classes.fetchOne(classId), [core]), activate: true);
+    final qLessons = useQuery(useCallback(() => lessons.fetchLessons(classId), [core]), activate: true);
 
     final qDelete = useQuery<void>(
-      useCallback(() async {
-        await core.handle(core.dio.delete('/classes/$classId'));
-      }, [core]),
+      useCallback(() => core.handle(core.dio.delete('/classes/$classId')), [core]),
       onSuccess: (v) async {
         Navigator.of(context).pop();
       },
@@ -92,6 +80,7 @@ class ClassDetailsScreen extends HookConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            NetStatus(),
             QueryDisplay(q: qClass),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

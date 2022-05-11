@@ -9,6 +9,7 @@ import 'package:musestream_app/screens/edit_class.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/class_card.dart';
 import 'package:musestream_app/widgets/drawer.dart';
+import 'package:musestream_app/widgets/netstatus.dart';
 
 class MyClassesScreen extends HookConsumerWidget {
   const MyClassesScreen({Key? key}) : super(key: key);
@@ -30,10 +31,11 @@ class MyClassesScreen extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 16),
+            NetStatus(),
             QueryDisplay(
               q: queryMine,
             ),
-            SizedBox(height: 16),
             ...cls.items.values.toList().reversed.map((c) => ClassCard(
                   cls: c,
                   onTap: () async {
