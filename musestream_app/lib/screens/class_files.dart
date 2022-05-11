@@ -9,6 +9,7 @@ import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:musestream_app/utils/util.dart';
+import 'package:musestream_app/widgets/netstatus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ClassFilesScreen extends HookConsumerWidget {
@@ -51,9 +52,10 @@ class ClassFilesScreen extends HookConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 16),
+              NetStatus(),
               QueryDisplay(q: qFiles),
               if (qFiles.value != null)
                 ...qFiles.value!.map(

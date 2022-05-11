@@ -11,11 +11,16 @@ class NetStatus extends HookConsumerWidget {
     final core = ref.watch(Core.provider);
 
     return !core.online
-        ? Chip(
-            label: Text(
-              mod ? 'Offline - changes will be applied after connection' : 'Offline - displaying cached data',
-            ),
-            avatar: Icon(Icons.warning_rounded),
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Chip(
+                label: Text(
+                  mod ? 'Offline - changes will be applied after connection' : 'Offline - displaying cached data',
+                ),
+                avatar: Icon(Icons.warning_rounded),
+              ),
+            ],
           )
         : SizedBox();
   }

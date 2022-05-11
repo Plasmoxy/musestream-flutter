@@ -42,4 +42,13 @@ class AllClasses extends ChangeNotifier with Persisted<String, Class> {
     save();
     notifyListeners();
   }
+
+  Future<void> fetchOne(int id) async {
+    final resp = await core.handle(core.dio.get<dynamic>('/classes/$id'));
+    final c = Class.fromJson(resp.data);
+    items[c.id.toString()] = c;
+    save();
+    notifyListeners();
+    print('Fetched one class $id');
+  }
 }

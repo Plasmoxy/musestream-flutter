@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/utils/util.dart';
 
 // display query state
-class QueryDisplay<T> extends StatelessWidget {
+class QueryDisplay<T> extends HookConsumerWidget {
   final QueryHookState<T> q;
   final Widget? Function()? loading;
   final Widget? Function(T?)? val;
@@ -20,7 +21,9 @@ class QueryDisplay<T> extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final core = ref.watch(Core.provider);
+
     // do not show inactive queries
     if (!q.isActive) return SizedBox();
 
@@ -50,7 +53,14 @@ class QueryDisplay<T> extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [Text(q.errMsg, style: tsErr)],
+            children: [
+              // DO NOT DISPLAY CONNECTION ERROR WHEN OFFLINE, WE KNOW THAT OFC
+              if (core.online || q.errMsg != 'Connection error')
+                Text(
+                  q.errMsg,
+                  style: tsErr,
+                ),
+            ],
           ),
         );
       }
@@ -72,7 +82,10 @@ class QueryHookState<T> {
   String get errMsg {
     if (error != null) {
       // grab api error message first
-      if (error is ApiErr) return (error as ApiErr).msg;
+      if (error is ApiErr) {
+        final e = (error as ApiErr);
+        return e.msg;
+      }
       // otherwise grab serverside message if supplied
       if (error is DioError) {
         final e = error as DioError;

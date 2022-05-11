@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
-import 'package:musestream_app/models/models.dart';
+import 'package:musestream_app/providers/allclasses.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/utils/util.dart';
 
@@ -13,16 +13,12 @@ class NewClassRequestScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final allClasses = ref.watch(AllClasses.provider);
     final msgCtrl = useTextEditingController();
     final form = useMemoized(() => GlobalKey<FormState>());
 
-    final qClass = useQuery(
-      useCallback(() async {
-        final resp = await core.handle(core.dio.get<dynamic>('/classes/$classId'));
-        return Class.fromJson(resp.data);
-      }, [core]),
-      activate: true,
-    );
+    final qClass = useQuery(useCallback(() => allClasses.fetchOne(classId), [core]), activate: true);
+    final cls = allClasses.items[classId.toString()];
 
     final qCreateRequest = useQuery(
       useCallback(() async {
@@ -45,16 +41,16 @@ class NewClassRequestScreen extends HookConsumerWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: QueryDisplay<Class>(
-            q: qClass,
-            val: (cls) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Form(
-                key: form,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // class rendering
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Form(
+              key: form,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  QueryDisplay(q: qClass),
+                  // class rendering
+                  if (cls != null)
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(36),
@@ -67,7 +63,7 @@ class NewClassRequestScreen extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  cls!.title,
+                                  cls.title,
                                   style: TextStyle(fontSize: 30),
                                   textAlign: TextAlign.left, // for example
                                 ),
@@ -83,49 +79,48 @@ class NewClassRequestScreen extends HookConsumerWidget {
                         ],
                       ),
                     ),
-                    // lessons
-                    Text(
-                      'Description',
-                      style: TextStyle(fontSize: 25),
+                  // lessons
+                  Text(
+                    'Description',
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  SizedBox(height: 16),
+                  if (cls != null) Text(cls.description),
+                  SizedBox(height: 16),
+                  Text(
+                    'Message for teacher',
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: msgCtrl,
+                    decoration: InputDecoration(
+                      label: Text('Message'),
+                      border: OutlineInputBorder(),
                     ),
-                    SizedBox(height: 16),
-                    Text(cls.description),
-                    SizedBox(height: 16),
-                    Text(
-                      'Message for teacher',
-                      style: TextStyle(fontSize: 25),
+                    validator: notEmpty,
+                  ),
+                  SizedBox(height: 16),
+                  QueryDisplay<void>(
+                    q: qCreateRequest,
+                    val: (v) => Text(
+                      'Request sent !',
+                      style: tsSucc,
                     ),
-                    SizedBox(height: 16),
-                    TextFormField(
-                      controller: msgCtrl,
-                      decoration: InputDecoration(
-                        label: Text('Message'),
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: notEmpty,
-                    ),
-                    SizedBox(height: 16),
-                    QueryDisplay<void>(
-                      q: qCreateRequest,
-                      val: (v) => Text(
-                        'Request sent !',
-                        style: tsSucc,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(primary: Colors.blue),
-                          child: Text(
-                            'Ask teacher to join',
-                          ),
-                          onPressed: submit,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.blue),
+                        child: Text(
+                          'Ask teacher to join',
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                        onPressed: submit,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
