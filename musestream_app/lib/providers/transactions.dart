@@ -3,16 +3,12 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/providers/core.dart';
-import 'package:musestream_app/providers/allclasses.dart';
-import 'package:musestream_app/providers/classes.dart';
-import 'package:musestream_app/providers/lessons.dart';
-import 'package:musestream_app/providers/requests.dart';
-import 'package:musestream_app/providers/students.dart';
 
 typedef Transaction = Future<dynamic> Function();
 
 class Transactions extends ChangeNotifier {
   Core core;
+  bool running = false;
 
   Queue<Transaction> queue = Queue();
 
@@ -53,6 +49,8 @@ class Transactions extends ChangeNotifier {
 
   Future<void> execute() async {
     print('Executing ${queue.length} transactions ...');
+    running = true;
+    notifyListeners();
     while (queue.isNotEmpty) {
       try {
         await queue.removeFirst()();
@@ -61,5 +59,7 @@ class Transactions extends ChangeNotifier {
       }
     }
     print('Transactions done.');
+    running = false;
+    notifyListeners();
   }
 }

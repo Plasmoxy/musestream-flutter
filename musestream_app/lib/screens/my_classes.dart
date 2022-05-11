@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/providers/classes.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/screens/class_details.dart';
 import 'package:musestream_app/screens/edit_class.dart';
 import 'package:musestream_app/utils/util.dart';
@@ -18,8 +19,13 @@ class MyClassesScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cls = ref.watch(Classes.provider);
     final core = ref.watch(Core.provider);
+    final transactions = ref.watch(Transactions.provider);
 
-    final queryMine = useQuery(useCallback(() => cls.getMine(), [cls]), activate: core.online);
+    final queryMine = useQuery(
+      useCallback(() => cls.getMine(), [cls]),
+      activate: core.online,
+      deps: [transactions.running],
+    );
 
     return Scaffold(
       appBar: AppBar(

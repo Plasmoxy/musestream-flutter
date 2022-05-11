@@ -5,6 +5,7 @@ import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/providers/students.dart';
+import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/screens/lessons_of_student.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/user_card.dart';
@@ -17,6 +18,7 @@ class StudentsOfClassScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final transactions = ref.watch(Transactions.provider);
     final students = ref.watch(Students.provider);
     final toDelId = useRef<int?>(null);
 

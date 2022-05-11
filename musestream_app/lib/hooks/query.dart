@@ -115,6 +115,7 @@ QueryHookState<T> useQuery<T>(
   final Future<void> Function(T?)? onSuccess,
   final Future<void> Function(Object)? onError,
   bool activate = false,
+  List<dynamic> deps = const [],
 }) {
   final active = useState(false);
   final loading = useState(false);
@@ -143,11 +144,11 @@ QueryHookState<T> useQuery<T>(
     loading.value = false;
   }, [creator]);
 
-  // trigger first run if activated
+  // trigger first run if activated, trigger runs on deps change (listening and refetching)
   useEffect(() {
     if (activate) run();
     return () {};
-  }, [activate]);
+  }, [activate, ...deps]);
 
   return QueryHookState(resp.value, err.value, loading.value, active.value, run);
 }

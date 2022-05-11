@@ -8,6 +8,7 @@ import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/netstatus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,6 +21,7 @@ class ClassFilesScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final transactions = ref.watch(Transactions.provider);
     final toUpload = useRef<File?>(null);
 
     final qFiles = useQuery<List<ClassFile>>(
@@ -28,6 +30,7 @@ class ClassFilesScreen extends HookConsumerWidget {
         return resp.data!.map((j) => ClassFile.fromJson(j)).toList();
       }, [core]),
       activate: core.online,
+      deps: [transactions.running],
     );
 
     final qUpload = useQuery<void>(
@@ -37,7 +40,7 @@ class ClassFilesScreen extends HookConsumerWidget {
         final formData = FormData.fromMap({
           'file': await MultipartFile.fromFile(toUpload.value!.path, filename: fileName),
         });
-        final resp = await core.handle(core.dio.post('/classfiles/$classId', data: formData));
+        await transactions.make(() => core.handle(core.dio.post('/classfiles/$classId', data: formData)));
       }, [core]),
       onSuccess: (v) async {
         qFiles.run();
@@ -80,6 +83,10 @@ class ClassFilesScreen extends HookConsumerWidget {
                     ),
                   ),
                 ),
+              QueryDisplay(
+                q: qUpload,
+                val: (void t) => Text('Done.'),
+              ),
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/providers/lessons.dart';
+import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/screens/call_screen.dart';
 import 'package:musestream_app/screens/edit_lesson.dart';
 import 'package:musestream_app/utils/util.dart';
@@ -22,6 +23,7 @@ class LessonDetailsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final transactions = ref.watch(Transactions.provider);
     final lessons = ref.watch(Lessons.provider);
 
     final lesson = lessons.items['$classId/$lessonId'];

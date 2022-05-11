@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/utils/util.dart';
 
 class EditLessonScreen extends HookConsumerWidget {
@@ -17,6 +18,7 @@ class EditLessonScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final transactions = ref.watch(Transactions.provider);
     final notes = useTextEditingController(text: toEdit?.notes);
     final start = useState<DateTime>(toEdit?.start ?? DateTime.now());
     final end = useState<DateTime>(toEdit?.end ?? DateTime.now().add(Duration(hours: 1)));
