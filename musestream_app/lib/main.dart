@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/classes.dart';
@@ -57,6 +59,11 @@ class App extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final timer = useMemoized(
+      () => Timer.periodic(Duration(seconds: 3), (timer) {
+        core.netCheck();
+      }),
+    );
 
     return MaterialApp(
       title: 'MuseStream',
