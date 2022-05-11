@@ -41,4 +41,10 @@ abstract class Persisted<String, T> {
     await file.writeAsString(jsonString);
     print("Saved $persistId to file.");
   }
+
+  Future<void> delete() async {
+    final file = await _file;
+    await file.delete();
+    print("Deleted $persistId file");
+  }
 }

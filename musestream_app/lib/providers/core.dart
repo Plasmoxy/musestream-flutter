@@ -20,7 +20,8 @@ class ApiErr implements Exception {
 class Core extends ChangeNotifier {
   final dio = Dio(BaseOptions(
     connectTimeout: 2000,
-    receiveTimeout: 10000,
+    receiveTimeout: 2000,
+    sendTimeout: 2000,
   ));
 
   // user stuff

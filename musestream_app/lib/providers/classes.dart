@@ -4,6 +4,7 @@ import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/providers/lessons.dart';
 import 'package:musestream_app/providers/persisted.dart';
+import 'package:musestream_app/providers/students.dart';
 
 class Classes extends ChangeNotifier with Persisted<String, Class> {
   Core core;
@@ -23,6 +24,7 @@ class Classes extends ChangeNotifier with Persisted<String, Class> {
     final core = ref.read(Core.provider);
     final classes = Classes(core);
     final lessons = ref.read(Lessons.provider);
+    final students = ref.read(Students.provider);
 
     ref.listen<Core>(Core.provider, (previous, next) {
       classes.core = next;
@@ -34,6 +36,7 @@ class Classes extends ChangeNotifier with Persisted<String, Class> {
       print('INIT loading from cache classes');
       await classes.load();
       await lessons.load();
+      await students.load();
 
       // load my classes
       print('INIT loading my classes');
@@ -44,6 +47,16 @@ class Classes extends ChangeNotifier with Persisted<String, Class> {
       for (final c in classes.items.values) {
         await lessons.fetchLessons(c.id);
       }
+
+      // fetch students for all classes that we loaded
+      if (core.user?.type == 'teacher') {
+        print('INIT-teacher Fetching students for loaded classes.');
+        for (final c in classes.items.values) {
+          await students.fetchClassStudents(c.id);
+        }
+      }
+    }).catchError((err) {
+      print(err);
     });
 
     return classes;

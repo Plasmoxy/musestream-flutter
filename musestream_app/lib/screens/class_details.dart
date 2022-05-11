@@ -8,6 +8,7 @@ import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/providers/lessons.dart';
 import 'package:musestream_app/screens/class_files.dart';
 import 'package:musestream_app/screens/edit_class.dart';
+import 'package:musestream_app/screens/edit_lesson.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/screens/students_of_class.dart';
 import 'package:musestream_app/utils/util.dart';

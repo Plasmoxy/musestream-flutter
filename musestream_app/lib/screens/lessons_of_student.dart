@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
-import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/providers/lessons.dart';
 import 'package:musestream_app/screens/edit_lesson.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/utils/util.dart';
@@ -22,14 +22,11 @@ class StudentLessonsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final lessons = ref.watch(Lessons.provider);
+    final sless = lessons.getByClassAndStudent(classId, studentId);
 
-    final qLessons = useQuery<List<Lesson>>(
-      useCallback(() async {
-        final resp = await core.handle(
-          core.dio.get<List<dynamic>>('/classes/$classId/students/$studentId/lessons'),
-        );
-        return resp.data!.map((j) => Lesson.fromJson(j)).toList();
-      }, [core]),
+    final qLessons = useQuery(
+      useCallback(() => lessons.fetchLessons(classId), [core]),
       activate: true,
     );
 
@@ -45,26 +42,22 @@ class StudentLessonsScreen extends HookConsumerWidget {
         ],
       ),
       body: SingleChildScrollView(
-        child: QueryDisplay<List<Lesson>>(
-          q: qLessons,
-          val: (lessons) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                QueryDisplay(q: qLessons),
-                ...lessons!.reversed.map(
-                  (l) => LessonCard(
-                    less: l,
-                    onTap: () async {
-                      await navigate(context, (c) => LessonDetailsScreen(lessonId: l.id, classId: classId));
-                      qLessons.run();
-                    },
-                  ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              QueryDisplay(q: qLessons),
+              ...sless.map(
+                (l) => LessonCard(
+                  less: l,
+                  onTap: () async {
+                    await navigate(context, (c) => LessonDetailsScreen(lessonId: l.id, classId: classId));
+                    qLessons.run();
+                  },
                 ),
-                if (qLessons.value != null && qLessons.value!.isEmpty) Text('No lessons'),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
