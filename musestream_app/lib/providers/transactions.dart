@@ -26,10 +26,8 @@ class Transactions extends ChangeNotifier {
     ref.listen<Core>(Core.provider, (previous, next) {
       trans.core = next;
 
-      print('CORE UPD');
-
-      // if we are changing from offline to online, run transactions
-      if (previous != null && !previous.online && next.online) {
+      // if we are online, execute transactions
+      if (trans.core.online) {
         trans.execute();
       }
 
