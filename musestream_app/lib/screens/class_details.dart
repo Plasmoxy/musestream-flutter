@@ -6,6 +6,7 @@ import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/classes.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/providers/lessons.dart';
+import 'package:musestream_app/providers/requests.dart';
 import 'package:musestream_app/screens/class_files.dart';
 import 'package:musestream_app/screens/edit_class.dart';
 import 'package:musestream_app/screens/edit_lesson.dart';
@@ -24,27 +25,25 @@ class ClassDetailsScreen extends HookConsumerWidget {
     final core = ref.watch(Core.provider);
     final classes = ref.watch(Classes.provider);
     final lessons = ref.watch(Lessons.provider);
+    final requests = ref.watch(Requests.provider);
     final targetRequest = useRef<ClassRequest?>(null);
 
     final cls = classes.items[classId.toString()];
     final lessonsItems = lessons.getByClass(classId);
+    final requestsItems = requests.getByClass(classId);
 
     final qClass = useQuery(useCallback(() => classes.fetchOne(classId), [core]), activate: true);
     final qLessons = useQuery(useCallback(() => lessons.fetchLessons(classId), [core]), activate: true);
+    final qClassRequests = useQuery(
+      useCallback(() => requests.fetchClassRequests(classId), [core]),
+      activate: core.user?.type == 'teacher',
+    );
 
     final qDelete = useQuery<void>(
       useCallback(() => core.handle(core.dio.delete('/classes/$classId')), [core]),
       onSuccess: (v) async {
         Navigator.of(context).pop();
       },
-    );
-
-    final qClassRequests = useQuery<List<ClassRequest>>(
-      useCallback(() async {
-        final resp = await core.handle(core.dio.get<List<dynamic>>('/classes/$classId/requests'));
-        return resp.data!.map((j) => ClassRequest.fromJson(j)).toList();
-      }, [core]),
-      activate: true,
     );
 
     final qDeleteRequest = useQuery<void>(
@@ -178,49 +177,46 @@ class ClassDetailsScreen extends HookConsumerWidget {
                       style: TextStyle(fontSize: 25),
                     ),
                     SizedBox(height: 8),
-                    QueryDisplay<List<ClassRequest>>(
-                      q: qClassRequests,
-                      val: (reqs) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: reqs!
-                            .map((r) => Container(
-                                  width: double.infinity,
-                                  child: Card(
-                                    margin: EdgeInsets.all(8),
-                                    child: Container(
-                                      padding: EdgeInsets.all(8),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text('From: ${r.student?.fullName}'),
-                                                Text('Message: ${r.message}'),
-                                              ],
-                                            ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: requestsItems
+                          .map((r) => Container(
+                                width: double.infinity,
+                                child: Card(
+                                  margin: EdgeInsets.all(8),
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text('From: ${r.student?.fullName}'),
+                                              Text('Message: ${r.message}'),
+                                            ],
                                           ),
-                                          IconButton(
-                                            icon: Icon(Icons.done),
-                                            onPressed: () async {
-                                              targetRequest.value = r;
-                                              qAcceptRequest.run();
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.close),
-                                            onPressed: () async {
-                                              targetRequest.value = r;
-                                              qDeleteRequest.run();
-                                            },
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.done),
+                                          onPressed: () async {
+                                            targetRequest.value = r;
+                                            qAcceptRequest.run();
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () async {
+                                            targetRequest.value = r;
+                                            qDeleteRequest.run();
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ))
-                            .toList(),
-                      ),
+                                ),
+                              ))
+                          .toList(),
                     ),
                     QueryDisplay(q: qAcceptRequest),
                     QueryDisplay(q: qDeleteRequest),

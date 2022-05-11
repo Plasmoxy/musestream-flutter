@@ -4,6 +4,7 @@ import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/providers/lessons.dart';
 import 'package:musestream_app/providers/persisted.dart';
+import 'package:musestream_app/providers/requests.dart';
 import 'package:musestream_app/providers/students.dart';
 
 class Classes extends ChangeNotifier with Persisted<String, Class> {
@@ -25,6 +26,7 @@ class Classes extends ChangeNotifier with Persisted<String, Class> {
     final classes = Classes(core);
     final lessons = ref.read(Lessons.provider);
     final students = ref.read(Students.provider);
+    final requests = ref.read(Requests.provider);
 
     ref.listen<Core>(Core.provider, (previous, next) {
       classes.core = next;
@@ -33,10 +35,11 @@ class Classes extends ChangeNotifier with Persisted<String, Class> {
     // init
     Future.delayed(Duration.zero, () async {
       // load from offline
-      print('INIT loading from cache classes');
+      print('INIT loading from cache');
       await classes.load();
       await lessons.load();
       await students.load();
+      await requests.load();
 
       // load my classes
       print('INIT loading my classes');
@@ -45,14 +48,19 @@ class Classes extends ChangeNotifier with Persisted<String, Class> {
       // fetch lessons for all classes that we loaded
       print('INIT Fetching lessons for loaded classes.');
       for (final c in classes.items.values) {
-        await lessons.fetchLessons(c.id);
+        lessons.fetchLessons(c.id);
       }
 
       // fetch students for all classes that we loaded
       if (core.user?.type == 'teacher') {
         print('INIT-teacher Fetching students for loaded classes.');
         for (final c in classes.items.values) {
-          await students.fetchClassStudents(c.id);
+          students.fetchClassStudents(c.id);
+        }
+
+        print('INIT-teacher Fetching requests for loaded classes.');
+        for (final c in classes.items.values) {
+          requests.fetchClassRequests(c.id);
         }
       }
     }).catchError((err) {
