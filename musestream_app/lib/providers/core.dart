@@ -27,7 +27,7 @@ class Core extends ChangeNotifier {
   // user stuff
   TokenData? loginData;
 
-  bool online = false;
+  bool online = true; // assume online
 
   bool get loggedIn => loginData != null;
   User? get user => loginData?.user;

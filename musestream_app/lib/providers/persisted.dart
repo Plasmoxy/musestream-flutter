@@ -51,6 +51,7 @@ abstract class Persisted<String, T> implements ChangeNotifier {
     final file = await _file;
     await file.delete();
     print("Deleted $persistId file");
+    items = {}; // reset items
     notifyListeners();
   }
 }

@@ -35,7 +35,6 @@ class AllClasses extends ChangeNotifier with Persisted<String, Class> {
   });
 
   Future<void> fetchAll() async {
-    print(core.dio.options.headers);
     final res = await core.handle<List<dynamic>>(core.dio.get('/classes/all'));
     items = {for (var c in res.data!.map((j) => Class.fromJson(j))) c.id.toString(): c};
     print('<> all classes');

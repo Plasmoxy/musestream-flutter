@@ -4,7 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/providers/allclasses.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/utils/util.dart';
+import 'package:musestream_app/widgets/netstatus.dart';
 
 class NewClassRequestScreen extends HookConsumerWidget {
   final int classId;
@@ -13,6 +15,7 @@ class NewClassRequestScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final transactions = ref.watch(Transactions.provider);
     final allClasses = ref.watch(AllClasses.provider);
     final msgCtrl = useTextEditingController();
     final form = useMemoized(() => GlobalKey<FormState>());
@@ -21,11 +24,14 @@ class NewClassRequestScreen extends HookConsumerWidget {
     final cls = allClasses.items[classId.toString()];
 
     final qCreateRequest = useQuery(
-      useCallback(() async {
-        await core.handle(core.dio.post<dynamic>('/classes/$classId/requests', data: {
-          'message': msgCtrl.text,
-        }));
-      }, [core]),
+      useCallback(
+        () => transactions.make(
+          () => core.handle(core.dio.post<dynamic>('/classes/$classId/requests', data: {
+            'message': msgCtrl.text,
+          })),
+        ),
+        [core],
+      ),
     );
 
     final submit = useCallback(() {
@@ -48,6 +54,7 @@ class NewClassRequestScreen extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  NetStatus(),
                   QueryDisplay(q: qClass),
                   // class rendering
                   if (cls != null)
@@ -104,7 +111,7 @@ class NewClassRequestScreen extends HookConsumerWidget {
                   QueryDisplay<void>(
                     q: qCreateRequest,
                     val: (v) => Text(
-                      'Request sent !',
+                      'Done.',
                       style: tsSucc,
                     ),
                   ),

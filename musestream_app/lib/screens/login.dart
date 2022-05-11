@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
+import 'package:musestream_app/providers/classes.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/register.dart';
 import 'package:musestream_app/utils/util.dart';
@@ -13,15 +14,21 @@ class LoginScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final classes = ref.watch(Classes.provider);
     final nameCtrl = useTextEditingController();
     final passwordCtrl = useTextEditingController();
     final serverCtrl = useTextEditingController(text: kIsWeb ? 'http://localhost' : 'http://10.0.2.2');
     final form = useMemoized(() => GlobalKey<FormState>());
 
-    final queryLogin = useQuery(useCallback(
-      () => core.login(nameCtrl.text, passwordCtrl.text, serverCtrl.text),
-      [],
-    ));
+    final queryLogin = useQuery(
+      useCallback(
+        () => core.login(nameCtrl.text, passwordCtrl.text, serverCtrl.text),
+        [],
+      ),
+      onSuccess: (void t) async {
+        classes.reset(); // reset classes on login
+      },
+    );
 
     final submit = useCallback(() {
       if (form.currentState?.validate() ?? false) {
