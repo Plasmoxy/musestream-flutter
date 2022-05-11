@@ -19,8 +19,13 @@ class Requests extends ChangeNotifier with Persisted<String, ClassRequest> {
   dynamic toJson(ClassRequest t) => t.toJson();
 
   static final provider = ChangeNotifierProvider((ref) {
-    final stds = Requests(ref.read(Core.provider));
-    return stds;
+    final reqs = Requests(ref.read(Core.provider));
+
+    ref.listen<Core>(Core.provider, (previous, next) {
+      reqs.core = next;
+    });
+
+    return reqs;
   });
 
   List<ClassRequest> getByClass(int cid) => items.entries.where((e) => e.key.startsWith('$cid/')).map((e) => e.value).toList();

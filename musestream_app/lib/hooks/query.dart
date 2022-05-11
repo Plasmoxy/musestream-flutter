@@ -54,12 +54,12 @@ class QueryDisplay<T> extends HookConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // DO NOT DISPLAY CONNECTION ERROR WHEN OFFLINE, WE KNOW THAT OFC
-              if (core.online || q.errMsg != 'Connection error')
-                Text(
-                  q.errMsg,
-                  style: tsErr,
-                ),
+              // DO NOT DISPLAY CONNECTION ERROR WHEN OFFLINE, WE KNOW THAT OFC - or do we ?
+              // if (core.online || q.errMsg != 'Connection error')
+              Text(
+                q.errMsg,
+                style: tsErr,
+              ),
             ],
           ),
         );

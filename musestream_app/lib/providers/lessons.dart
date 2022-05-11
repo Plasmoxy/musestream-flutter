@@ -20,6 +20,11 @@ class Lessons extends ChangeNotifier with Persisted<String, Lesson> {
 
   static final provider = ChangeNotifierProvider((ref) {
     final lessons = Lessons(ref.read(Core.provider));
+
+    ref.listen<Core>(Core.provider, (previous, next) {
+      lessons.core = next;
+    });
+
     return lessons;
   });
 
