@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/providers/lessons.dart';
+import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/screens/edit_lesson.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/utils/util.dart';
@@ -24,10 +25,12 @@ class StudentLessonsScreen extends HookConsumerWidget {
     final core = ref.watch(Core.provider);
     final lessons = ref.watch(Lessons.provider);
     final sless = lessons.getByClassAndStudent(classId, studentId);
+    final transactions = ref.watch(Transactions.provider);
 
     final qLessons = useQuery(
       useCallback(() => lessons.fetchLessons(classId), [core]),
       activate: core.online,
+      deps: [transactions.running],
     );
 
     return Scaffold(

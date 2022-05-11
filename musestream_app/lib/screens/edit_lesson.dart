@@ -29,18 +29,18 @@ class EditLessonScreen extends HookConsumerWidget {
         if (toEdit == null) {
           print('/classes/$classId/students/$studentId/lessons');
           // create
-          await core.handle(core.dio.post('/classes/$classId/students/$studentId/lessons', data: {
-            'notes': notes.text,
-            'start': start.value.toIso8601String(),
-            'end': end.value.toIso8601String(),
-          }));
+          await transactions.make(() => core.handle(core.dio.post('/classes/$classId/students/$studentId/lessons', data: {
+                'notes': notes.text,
+                'start': start.value.toIso8601String(),
+                'end': end.value.toIso8601String(),
+              })));
         } else {
           // update
-          await core.handle(core.dio.put('/lessons/${toEdit!.id}', data: {
-            'notes': notes.text,
-            'start': start.value.toIso8601String(),
-            'end': end.value.toIso8601String(),
-          }));
+          await transactions.make(() => core.handle(core.dio.put('/lessons/${toEdit!.id}', data: {
+                'notes': notes.text,
+                'start': start.value.toIso8601String(),
+                'end': end.value.toIso8601String(),
+              })));
         }
       }, [core]),
       onSuccess: (v) async {

@@ -25,12 +25,11 @@ class StudentsOfClassScreen extends HookConsumerWidget {
     final qStudents = useQuery(
       useCallback(() => students.fetchClassStudents(classId), [core]),
       activate: core.online,
+      deps: [transactions.running],
     );
 
     final qDelete = useQuery<void>(
-      useCallback(() async {
-        await core.handle(core.dio.delete('/classes/$classId/students/${toDelId.value}'));
-      }, [core]),
+      useCallback(() => transactions.make(() => core.handle(core.dio.delete('/classes/$classId/students/${toDelId.value}'))), [core]),
       onSuccess: (v) async {
         Navigator.of(context).pop();
       },

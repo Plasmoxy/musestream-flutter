@@ -25,13 +25,13 @@ class EditClassScreen extends HookConsumerWidget {
     final queryUpdate = useQuery<void>(
       useCallback(() async {
         if (toEdit == null) {
-          transactions.make(() => core.handle(core.dio.post('/classes', data: {
+          await transactions.make(() => core.handle(core.dio.post('/classes', data: {
                 'title': titleCtrl.text,
                 'description': descCtrl.text,
                 'instrument': instrCtrl.text,
               })));
         } else {
-          transactions.make(() => core.handle(core.dio.put('/classes/${toEdit!.id}', data: {
+          await transactions.make(() => core.handle(core.dio.put('/classes/${toEdit!.id}', data: {
                 'title': titleCtrl.text,
                 'description': descCtrl.text,
                 'instrument': instrCtrl.text,

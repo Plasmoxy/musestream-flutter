@@ -9,6 +9,7 @@ import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/screens/call_screen.dart';
 import 'package:musestream_app/screens/edit_lesson.dart';
 import 'package:musestream_app/utils/util.dart';
+import 'package:musestream_app/widgets/netstatus.dart';
 
 class LessonDetailsScreen extends HookConsumerWidget {
   final int lessonId;
@@ -31,12 +32,11 @@ class LessonDetailsScreen extends HookConsumerWidget {
     final qLesson = useQuery(
       useCallback(() => lessons.fetchLessons(classId), [core, lessonId]),
       activate: core.online,
+      deps: [transactions.running],
     );
 
     final qDelete = useQuery<void>(
-      useCallback(() async {
-        await core.handle(core.dio.delete('/lessons/$lessonId'));
-      }, [core]),
+      useCallback(() => transactions.make(() => core.handle(core.dio.delete('/lessons/$lessonId'))), [core]),
       onSuccess: (v) async {
         Navigator.of(context).pop();
       },
@@ -50,6 +50,7 @@ class LessonDetailsScreen extends HookConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            NetStatus(),
             QueryDisplay(q: qLesson),
             if (lesson != null)
               Container(
@@ -84,12 +85,14 @@ class LessonDetailsScreen extends HookConsumerWidget {
                   Row(
                     children: [
                       ElevatedButton(
-                        child: Text(core.user?.type == 'teacher'
-                            ? 'Start call'
-                            : lesson.roomId == null
-                                ? 'The lesson hasn\'t started yet'
-                                : 'Join video call'),
-                        onPressed: (core.user?.type == 'student' && lesson.roomId == null)
+                        child: Text(core.online
+                            ? core.user?.type == 'teacher'
+                                ? 'Start call'
+                                : lesson.roomId == null
+                                    ? 'The lesson hasn\'t started yet'
+                                    : 'Join video call'
+                            : 'Cannot call when offline'),
+                        onPressed: !core.online || (core.user?.type == 'student' && lesson.roomId == null)
                             ? null
                             : () async {
                                 await navigate(context, (ctx) => CallScreen(lessonId: lesson.id));
