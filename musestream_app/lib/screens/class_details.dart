@@ -31,8 +31,8 @@ class ClassDetailsScreen extends HookConsumerWidget {
     final lessonsItems = lessons.getByClass(classId);
     final requestsItems = requests.getByClass(classId);
 
-    final qClass = useQuery(useCallback(() => classes.fetchOne(classId), [core]), activate: true);
-    final qLessons = useQuery(useCallback(() => lessons.fetchLessons(classId), [core]), activate: true);
+    final qClass = useQuery(useCallback(() => classes.fetchOne(classId), [core]), activate: core.online);
+    final qLessons = useQuery(useCallback(() => lessons.fetchLessons(classId), [core]), activate: core.online);
     final qClassRequests = useQuery(
       useCallback(() => requests.fetchClassRequests(classId), [core]),
       activate: core.user?.type == 'teacher',

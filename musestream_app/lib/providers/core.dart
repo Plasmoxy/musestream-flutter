@@ -110,18 +110,9 @@ class Core extends ChangeNotifier {
     }
   }
 
-  Future<void> netCheck() async {
-    dio.post('/').then((res) {
-      if (!online) {
-        online = true;
-        notifyListeners();
-      }
-    }).catchError((err) {
-      if (online && err.type == DioErrorType.other && err.error is SocketException) {
-        online = false;
-        notifyListeners();
-      }
-    });
+  void setOnline(bool o) {
+    online = o;
+    notifyListeners();
   }
 
   Future<void> login(String name, String pass, String serverIp) async {

@@ -27,7 +27,7 @@ class ClassFilesScreen extends HookConsumerWidget {
         final resp = await core.handle(core.dio.get<List<dynamic>>('/classfiles/$classId'));
         return resp.data!.map((j) => ClassFile.fromJson(j)).toList();
       }, [core]),
-      activate: true,
+      activate: core.online,
     );
 
     final qUpload = useQuery<void>(

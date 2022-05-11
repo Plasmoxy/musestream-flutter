@@ -17,7 +17,7 @@ class RequestClassesScreen extends HookConsumerWidget {
     final core = ref.watch(Core.provider);
     final allClasses = ref.watch(AllClasses.provider);
 
-    final queryAll = useQuery(useCallback(() => allClasses.fetchAll(), [core]), activate: true);
+    final queryAll = useQuery(useCallback(() => allClasses.fetchAll(), [core]), activate: core.online);
 
     return Scaffold(
       appBar: AppBar(

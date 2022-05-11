@@ -63,7 +63,7 @@ class CallScreen extends HookConsumerWidget {
         final resp = await core.handle(core.dio.get<dynamic>('/lessons/$lessonId'));
         return Lesson.fromJson(resp.data);
       }, [core, lessonId]),
-      activate: true,
+      activate: core.online,
       onSuccess: (l) => initialize(l?.roomId),
     );
 

@@ -19,7 +19,7 @@ class MyClassesScreen extends HookConsumerWidget {
     final cls = ref.watch(Classes.provider);
     final core = ref.watch(Core.provider);
 
-    final queryMine = useQuery(useCallback(() => cls.getMine(), [cls]), activate: true);
+    final queryMine = useQuery(useCallback(() => cls.getMine(), [cls]), activate: core.online);
 
     return Scaffold(
       appBar: AppBar(

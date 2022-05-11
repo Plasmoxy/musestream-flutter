@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,6 +10,7 @@ import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/classes.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:musestream_app/providers/lessons.dart';
 import 'package:musestream_app/screens/admin_home.dart';
 import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
@@ -59,10 +62,21 @@ class App extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
-    final timer = useMemoized(
-      () => Timer.periodic(Duration(seconds: 3), (timer) {
-        core.netCheck();
+
+    // net check timer
+    final netCheckTimer = useMemoized(
+      () => Timer.periodic(Duration(seconds: 1), (timer) {
+        core.dio.get('/').then((res) {
+          if (!core.online) {
+            core.setOnline(true);
+          }
+        }).catchError((err) {
+          if (core.online && err.type == DioErrorType.other && err.error is SocketException) {
+            core.setOnline(false);
+          }
+        });
       }),
+      [ref],
     );
 
     return MaterialApp(

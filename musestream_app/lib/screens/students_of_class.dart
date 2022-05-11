@@ -20,7 +20,10 @@ class StudentsOfClassScreen extends HookConsumerWidget {
     final students = ref.watch(Students.provider);
     final toDelId = useRef<int?>(null);
 
-    final qStudents = useQuery(useCallback(() => students.fetchClassStudents(classId), [core]), activate: true);
+    final qStudents = useQuery(
+      useCallback(() => students.fetchClassStudents(classId), [core]),
+      activate: core.online,
+    );
 
     final qDelete = useQuery<void>(
       useCallback(() async {

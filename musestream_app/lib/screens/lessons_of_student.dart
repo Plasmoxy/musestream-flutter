@@ -27,7 +27,7 @@ class StudentLessonsScreen extends HookConsumerWidget {
 
     final qLessons = useQuery(
       useCallback(() => lessons.fetchLessons(classId), [core]),
-      activate: true,
+      activate: core.online,
     );
 
     return Scaffold(
@@ -52,7 +52,12 @@ class StudentLessonsScreen extends HookConsumerWidget {
                 (l) => LessonCard(
                   less: l,
                   onTap: () async {
-                    await navigate(context, (c) => LessonDetailsScreen(lessonId: l.id, classId: classId));
+                    await navigate(
+                        context,
+                        (c) => LessonDetailsScreen(
+                              lessonId: l.id,
+                              classId: classId,
+                            ));
                     qLessons.run();
                   },
                 ),

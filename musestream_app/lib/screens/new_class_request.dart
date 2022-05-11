@@ -17,7 +17,7 @@ class NewClassRequestScreen extends HookConsumerWidget {
     final msgCtrl = useTextEditingController();
     final form = useMemoized(() => GlobalKey<FormState>());
 
-    final qClass = useQuery(useCallback(() => allClasses.fetchOne(classId), [core]), activate: true);
+    final qClass = useQuery(useCallback(() => allClasses.fetchOne(classId), [core]), activate: core.online);
     final cls = allClasses.items[classId.toString()];
 
     final qCreateRequest = useQuery(

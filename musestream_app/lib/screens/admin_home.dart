@@ -19,7 +19,7 @@ class AdminHomeScreen extends HookConsumerWidget {
         final resp = await core.handle(core.dio.get<List<dynamic>>('/users'));
         return resp.data!.map((j) => User.fromJson(j)).toList();
       }, [core]),
-      activate: true,
+      activate: core.online,
     );
 
     return Scaffold(

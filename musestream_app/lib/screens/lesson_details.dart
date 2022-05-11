@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/providers/lessons.dart';
 import 'package:musestream_app/screens/call_screen.dart';
 import 'package:musestream_app/screens/edit_lesson.dart';
 import 'package:musestream_app/utils/util.dart';
@@ -12,18 +13,22 @@ class LessonDetailsScreen extends HookConsumerWidget {
   final int lessonId;
   final int classId;
 
-  const LessonDetailsScreen({Key? key, required this.lessonId, required this.classId}) : super(key: key);
+  const LessonDetailsScreen({
+    Key? key,
+    required this.lessonId,
+    required this.classId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final lessons = ref.watch(Lessons.provider);
+
+    final lesson = lessons.items['$classId/$lessonId'];
 
     final qLesson = useQuery(
-      useCallback(() async {
-        final resp = await core.handle(core.dio.get<dynamic>('/lessons/$lessonId'));
-        return Lesson.fromJson(resp.data);
-      }, [core, lessonId]),
-      activate: true,
+      useCallback(() => lessons.fetchLessons(classId), [core, lessonId]),
+      activate: core.online,
     );
 
     final qDelete = useQuery<void>(
@@ -41,10 +46,10 @@ class LessonDetailsScreen extends HookConsumerWidget {
         actions: [IconButton(onPressed: qLesson.run, icon: Icon(Icons.refresh))],
       ),
       body: SingleChildScrollView(
-        child: QueryDisplay<Lesson>(
-          q: qLesson,
-          val: (lesson) => Column(
-            children: [
+        child: Column(
+          children: [
+            QueryDisplay(q: qLesson),
+            if (lesson != null)
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(36),
@@ -57,7 +62,7 @@ class LessonDetailsScreen extends HookConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Start: ' + formatDate(lesson!.start),
+                            'Start: ' + formatDate(lesson.start),
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
@@ -70,6 +75,7 @@ class LessonDetailsScreen extends HookConsumerWidget {
                   ],
                 ),
               ),
+            if (lesson != null)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -129,8 +135,7 @@ class LessonDetailsScreen extends HookConsumerWidget {
                   Text(lesson.notes),
                 ]),
               )
-            ],
-          ),
+          ],
         ),
       ),
     );
