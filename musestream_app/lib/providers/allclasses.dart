@@ -23,6 +23,7 @@ class AllClasses extends ChangeNotifier with Persisted<String, Class> {
 
     ref.listen<Core>(Core.provider, (previous, next) {
       classes.core = next;
+      if (!next.loggedIn) classes.delete();
     });
 
     // init

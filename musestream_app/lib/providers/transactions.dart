@@ -31,14 +31,7 @@ class Transactions extends ChangeNotifier {
         trans.execute();
       }
 
-      // if we logged out delete files SPAGHET CODE WARNING
       if (!trans.core.loggedIn) {
-        print('NOT LOGGED IN, DELETING CACHE');
-        ref.read(AllClasses.provider).delete();
-        ref.read(Classes.provider).delete();
-        ref.read(Lessons.provider).delete();
-        ref.read(Requests.provider).delete();
-        ref.read(Students.provider).delete();
         trans.queue.clear();
       }
     });

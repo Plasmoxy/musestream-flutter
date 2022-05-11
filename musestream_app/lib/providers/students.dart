@@ -20,6 +20,12 @@ class Students extends ChangeNotifier with Persisted<String, User> {
 
   static final provider = ChangeNotifierProvider((ref) {
     final stds = Students(ref.read(Core.provider));
+
+    ref.listen<Core>(Core.provider, (previous, next) {
+      stds.core = next;
+      if (!next.loggedIn) stds.delete();
+    });
+
     return stds;
   });
 

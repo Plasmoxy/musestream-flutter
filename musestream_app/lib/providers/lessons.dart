@@ -23,6 +23,7 @@ class Lessons extends ChangeNotifier with Persisted<String, Lesson> {
 
     ref.listen<Core>(Core.provider, (previous, next) {
       lessons.core = next;
+      if (!next.loggedIn) lessons.delete();
     });
 
     return lessons;

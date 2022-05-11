@@ -23,6 +23,7 @@ class Requests extends ChangeNotifier with Persisted<String, ClassRequest> {
 
     ref.listen<Core>(Core.provider, (previous, next) {
       reqs.core = next;
+      if (!next.loggedIn) reqs.delete();
     });
 
     return reqs;
