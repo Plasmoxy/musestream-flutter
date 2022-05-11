@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/providers/students.dart';
 import 'package:musestream_app/screens/lessons_of_student.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/user_card.dart';
@@ -16,15 +17,10 @@ class StudentsOfClassScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
+    final students = ref.watch(Students.provider);
     final toDelId = useRef<int?>(null);
 
-    final qStudents = useQuery<List<User>>(
-      useCallback(() async {
-        final resp = await core.handle(core.dio.get<List<dynamic>>('/classes/$classId/students'));
-        return resp.data!.map((j) => User.fromJson(j)).toList();
-      }, [core]),
-      activate: true,
-    );
+    final qStudents = useQuery(useCallback(() => students.fetchClassStudents(classId), [core]), activate: true);
 
     final qDelete = useQuery<void>(
       useCallback(() async {
@@ -40,26 +36,25 @@ class StudentsOfClassScreen extends HookConsumerWidget {
         title: const Text('Students of class'),
       ),
       body: SingleChildScrollView(
-        child: QueryDisplay<List<User>>(
-          q: qStudents,
-          val: (students) => Column(
-            children: [
-              QueryDisplay(q: qDelete),
-              ...students!
-                  .map((s) => UserCard(
-                        usr: s,
-                        onTap: () async {
-                          await navigate(context, (ctx) => StudentLessonsScreen(studentId: s.id, classId: classId));
-                          qStudents.run();
-                        },
-                        onDelete: () async {
-                          toDelId.value = s.id;
-                          qDelete.run();
-                        },
-                      ))
-                  .toList(),
-            ],
-          ),
+        child: Column(
+          children: [
+            QueryDisplay(q: qStudents),
+            QueryDisplay(q: qDelete),
+            ...students
+                .getByClass(classId)
+                .map((s) => UserCard(
+                      usr: s,
+                      onTap: () async {
+                        await navigate(context, (ctx) => StudentLessonsScreen(studentId: s.id, classId: classId));
+                        qStudents.run();
+                      },
+                      onDelete: () async {
+                        toDelId.value = s.id;
+                        qDelete.run();
+                      },
+                    ))
+                .toList(),
+          ],
         ),
       ),
     );

@@ -23,6 +23,8 @@ class Students extends ChangeNotifier with Persisted<String, User> {
     return stds;
   });
 
+  List<User> getByClass(int cid) => items.entries.where((e) => e.key.startsWith('$cid/')).map((e) => e.value).toList();
+
   Future<void> fetchClassStudents(int classId) async {
     final res = await core.handle<List<dynamic>>(core.dio.get('/classes/$classId/students'));
     items = {for (var s in res.data!.map((j) => User.fromJson(j))) '$classId/${s.id}': s};
