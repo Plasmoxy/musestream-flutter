@@ -8,6 +8,7 @@ import 'package:musestream_app/providers/students.dart';
 import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/screens/lessons_of_student.dart';
 import 'package:musestream_app/utils/util.dart';
+import 'package:musestream_app/widgets/netstatus.dart';
 import 'package:musestream_app/widgets/user_card.dart';
 
 class StudentsOfClassScreen extends HookConsumerWidget {
@@ -42,6 +43,7 @@ class StudentsOfClassScreen extends HookConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            NetStatus(),
             QueryDisplay(q: qStudents),
             QueryDisplay(q: qDelete),
             ...students

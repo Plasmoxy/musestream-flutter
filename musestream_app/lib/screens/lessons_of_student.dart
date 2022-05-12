@@ -9,6 +9,7 @@ import 'package:musestream_app/screens/edit_lesson.dart';
 import 'package:musestream_app/screens/lesson_details.dart';
 import 'package:musestream_app/utils/util.dart';
 import 'package:musestream_app/widgets/lesson_card.dart';
+import 'package:musestream_app/widgets/netstatus.dart';
 
 class StudentLessonsScreen extends HookConsumerWidget {
   final int studentId;
@@ -50,6 +51,7 @@ class StudentLessonsScreen extends HookConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              NetStatus(),
               QueryDisplay(q: qLessons),
               ...sless.map(
                 (l) => LessonCard(
