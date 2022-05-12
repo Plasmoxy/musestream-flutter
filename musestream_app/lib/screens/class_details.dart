@@ -50,7 +50,11 @@ class ClassDetailsScreen extends HookConsumerWidget {
     );
 
     final qDelete = useQuery<void>(
-      useCallback(() => transactions.make(() => core.handle(core.dio.delete('/classes/$classId'))), [core]),
+      useCallback(() async {
+        if (await transactions.make(() => core.handle(core.dio.delete('/classes/$classId')))) {
+          classes.items.remove(classId.toString());
+        }
+      }, [core]),
       onSuccess: (v) async {
         Navigator.of(context).pop();
       },
@@ -58,9 +62,11 @@ class ClassDetailsScreen extends HookConsumerWidget {
 
     final qDeleteRequest = useQuery<void>(
       useCallback(
-        () => transactions.make(
-          () => core.handle(core.dio.delete('/requests/${targetRequest.value?.id}')),
-        ),
+        () async {
+          if (await transactions.make(() => core.handle(core.dio.delete('/requests/${targetRequest.value?.id}')))) {
+            requests.items.remove('$classId/${targetRequest.value?.id}');
+          }
+        },
         [core],
       ),
       onSuccess: (v) async {
@@ -69,7 +75,11 @@ class ClassDetailsScreen extends HookConsumerWidget {
     );
 
     final qAcceptRequest = useQuery<void>(
-      useCallback(() => transactions.make(() => core.handle(core.dio.post('/requests/${targetRequest.value?.id}'))), [core]),
+      useCallback(() async {
+        if (await transactions.make(() => core.handle(core.dio.post('/requests/${targetRequest.value?.id}')))) {
+          requests.items.remove('$classId/${targetRequest.value?.id}');
+        }
+      }, [core]),
       onSuccess: (v) async {
         qClassRequests.run();
       },
@@ -100,34 +110,35 @@ class ClassDetailsScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // class rendering
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(36),
-                    child: Row(
-                      children: [
-                        Icon(Icons.school, size: 32),
-                        SizedBox(width: 32),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                cls!.title,
-                                style: TextStyle(fontSize: 30),
-                                textAlign: TextAlign.left, // for example
-                              ),
-                              Text(
-                                'with ' + (cls.teacher?.fullName ?? ''),
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Text('• Instrument: ' + cls.instrument),
-                              Text('• Description: ' + cls.description),
-                            ],
+                  if (cls != null)
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(36),
+                      child: Row(
+                        children: [
+                          Icon(Icons.school, size: 32),
+                          SizedBox(width: 32),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  cls.title,
+                                  style: TextStyle(fontSize: 30),
+                                  textAlign: TextAlign.left, // for example
+                                ),
+                                Text(
+                                  'with ' + (cls.teacher?.fullName ?? ''),
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text('• Instrument: ' + cls.instrument),
+                                Text('• Description: ' + cls.description),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
                   // actions
                   if (core.user?.type == 'teacher') ...[
@@ -242,13 +253,14 @@ class ClassDetailsScreen extends HookConsumerWidget {
                   ),
                   SizedBox(height: 8),
                   QueryDisplay(q: qLessons),
-                  ...lessonsItems.reversed.map((l) => LessonCard(
-                        less: l,
-                        onTap: () async {
-                          await navigate(context, (c) => LessonDetailsScreen(lessonId: l.id, classId: cls.id));
-                          qLessons.run();
-                        },
-                      )),
+                  if (cls != null)
+                    ...lessonsItems.reversed.map((l) => LessonCard(
+                          less: l,
+                          onTap: () async {
+                            await navigate(context, (c) => LessonDetailsScreen(lessonId: l.id, classId: cls.id));
+                            qLessons.run();
+                          },
+                        )),
                 ],
               ),
             ),

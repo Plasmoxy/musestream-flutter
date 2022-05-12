@@ -36,7 +36,11 @@ class LessonDetailsScreen extends HookConsumerWidget {
     );
 
     final qDelete = useQuery<void>(
-      useCallback(() => transactions.make(() => core.handle(core.dio.delete('/lessons/$lessonId'))), [core]),
+      useCallback(() async {
+        if (await transactions.make(() => core.handle(core.dio.delete('/lessons/$lessonId')))) {
+          lessons.items.remove('$classId/$lessonId');
+        }
+      }, [core]),
       onSuccess: (v) async {
         Navigator.of(context).pop();
       },

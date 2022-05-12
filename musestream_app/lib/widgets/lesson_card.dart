@@ -46,6 +46,11 @@ class LessonCard extends StatelessWidget {
 
                     // if populated with student, add name
                     if (less.classStudent?.student?.fullName != null) Text('Student: ' + less.classStudent!.student!.fullName),
+
+                    Text(
+                      less.notes,
+                      style: TextStyle(fontSize: 12), // for example
+                    ),
                   ],
                 ),
               ),

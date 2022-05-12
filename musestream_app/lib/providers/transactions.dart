@@ -35,16 +35,18 @@ class Transactions extends ChangeNotifier {
     return trans;
   });
 
-  Future<void> make(Transaction t) async {
+  // return true if transaction was added
+  Future<bool> make(Transaction t) async {
     if (core.online) {
       await t(); // if online, immediately run transaction
-      return;
+      return false;
     }
 
     // else add to transactions
     queue.add(t);
     print('Added a transaction!');
     notifyListeners();
+    return true;
   }
 
   Future<void> execute() async {

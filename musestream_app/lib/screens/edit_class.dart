@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
+import 'package:musestream_app/providers/classes.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/utils/util.dart';
@@ -17,6 +20,7 @@ class EditClassScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
     final transactions = ref.watch(Transactions.provider);
+    final classes = ref.watch(Classes.provider);
     final titleCtrl = useTextEditingController(text: toEdit?.title);
     final descCtrl = useTextEditingController(text: toEdit?.description);
     final instrCtrl = useTextEditingController(text: toEdit?.instrument);
@@ -25,17 +29,26 @@ class EditClassScreen extends HookConsumerWidget {
     final queryUpdate = useQuery<void>(
       useCallback(() async {
         if (toEdit == null) {
-          await transactions.make(() => core.handle(core.dio.post('/classes', data: {
+          if (await transactions.make(() => core.handle(core.dio.post('/classes', data: {
                 'title': titleCtrl.text,
                 'description': descCtrl.text,
                 'instrument': instrCtrl.text,
-              })));
+              })))) {}
         } else {
-          await transactions.make(() => core.handle(core.dio.put('/classes/${toEdit!.id}', data: {
+          if (await transactions.make(() => core.handle(core.dio.put('/classes/${toEdit!.id}', data: {
                 'title': titleCtrl.text,
                 'description': descCtrl.text,
                 'instrument': instrCtrl.text,
-              })));
+              })))) {
+            classes.items[toEdit!.id.toString()] = Class(
+              id: toEdit!.id,
+              title: titleCtrl.text,
+              description: descCtrl.text,
+              instrument: instrCtrl.text,
+              teacher: toEdit!.teacher,
+              teacherId: toEdit!.teacherId,
+            );
+          }
         }
       }, [core]),
       onSuccess: (v) async {

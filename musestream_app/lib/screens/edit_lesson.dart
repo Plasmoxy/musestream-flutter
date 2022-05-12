@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/hooks/query.dart';
 import 'package:musestream_app/models/models.dart';
 import 'package:musestream_app/providers/core.dart';
+import 'package:musestream_app/providers/lessons.dart';
 import 'package:musestream_app/providers/transactions.dart';
 import 'package:musestream_app/utils/util.dart';
 
@@ -19,6 +20,7 @@ class EditLessonScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final core = ref.watch(Core.provider);
     final transactions = ref.watch(Transactions.provider);
+    final lessons = ref.watch(Lessons.provider);
     final notes = useTextEditingController(text: toEdit?.notes);
     final start = useState<DateTime>(toEdit?.start ?? DateTime.now());
     final end = useState<DateTime>(toEdit?.end ?? DateTime.now().add(Duration(hours: 1)));
@@ -36,11 +38,21 @@ class EditLessonScreen extends HookConsumerWidget {
               })));
         } else {
           // update
-          await transactions.make(() => core.handle(core.dio.put('/lessons/${toEdit!.id}', data: {
+          if (await transactions.make(() => core.handle(core.dio.put('/lessons/${toEdit!.id}', data: {
                 'notes': notes.text,
                 'start': start.value.toIso8601String(),
                 'end': end.value.toIso8601String(),
-              })));
+              })))) {
+            lessons.items['$classId/${toEdit!.id}'] = Lesson(
+              classStudentId: toEdit!.classStudentId,
+              id: toEdit!.id,
+              classStudent: toEdit!.classStudent,
+              roomId: toEdit!.roomId,
+              notes: notes.text,
+              start: start.value,
+              end: end.value,
+            );
+          }
         }
       }, [core]),
       onSuccess: (v) async {
@@ -130,7 +142,7 @@ class EditLessonScreen extends HookConsumerWidget {
                   SizedBox(height: 16),
                   QueryDisplay<void>(
                     q: queryUpdate,
-                    val: (v) => Text('Class saved!'),
+                    val: (v) => Text('Lesson saved!'),
                     err: (q) => Text(q.errMsg, style: tsErr),
                   ),
                   SizedBox(height: 10),
