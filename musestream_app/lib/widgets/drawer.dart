@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:musestream_app/providers/core.dart';
 import 'package:musestream_app/screens/admin_home.dart';
+import 'package:musestream_app/screens/login.dart';
 import 'package:musestream_app/screens/my_classes.dart';
 import 'package:musestream_app/screens/request_class.dart';
 import 'package:musestream_app/screens/rtc_test.dart';
@@ -91,6 +92,7 @@ class AppDrawer extends HookConsumerWidget {
             title: const Text('Log out'),
             onTap: () async {
               await core.logout();
+              navigate(context, (ctx) => LoginScreen());
             },
           ),
           Padding(
